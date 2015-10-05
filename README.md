@@ -22,6 +22,7 @@ Current state
 [![Coverage Status](https://coveralls.io/repos/Codarama/haxsync/badge.svg?branch=master&service=github)](https://coveralls.io/github/Codarama/haxsync?branch=master)
 [![Static Code Analysis Status](https://scan.coverity.com/projects/6282/badge.svg)](https://scan.coverity.com/projects/codarama-haxsync)
 [![Dependency Status](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1)
+[![License](http://img.shields.io/:license-GPL2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
 The project is currently **unstable**.
 
