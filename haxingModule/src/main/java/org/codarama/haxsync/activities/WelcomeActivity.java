@@ -9,16 +9,19 @@ import android.widget.ImageView;
 
 import org.codarama.haxsync.R;
 
+/**
+ * <p>Welcome screen</p>
+ * <p>Displayed when the application is started for the first time. Leads to the {@link WizardActivity}.</p>
+ */
 public class WelcomeActivity extends Activity {
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_welcome);
-        //	Animation hyperspaceJump = AnimationUtils.loadAnimation(this, R.anim.hyperjump);
+
         ImageView image = (ImageView) findViewById(R.id.logo);
-        //image.startAnimation(hyperspaceJump);
         image.setOnClickListener(new OnClickListener() {
 
             @Override
@@ -29,8 +32,5 @@ public class WelcomeActivity extends Activity {
                 WelcomeActivity.this.finish();
             }
         });
-
     }
-
-
 }
