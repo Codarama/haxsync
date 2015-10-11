@@ -55,4 +55,5 @@
     <string name="token_notification_ticker">Respuesta inválida de Facebook</string>
     <string name="token_notification_description">Toca para dar permisiones otra vez</string>
     <string name="charging_only">Solamente sincronizar cuando cargando</string>
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

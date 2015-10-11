@@ -158,5 +158,5 @@
     <string name="ignore_middle_names_summary">Ignores middle names and titles (e.g. Dr.) from Facebook friends</string>
     <string name="add_me_to_friends">Sync "Me" contact with my contact entry</string>
     <string name="add_me_to_friends_summary">If you have yourself saved as contact</string>
-
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

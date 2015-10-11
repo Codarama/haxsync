@@ -59,4 +59,5 @@
     <string name="sync_location">Synchroniser les adresses</string>
     <string name="event_status">Événements à synchroniser</string>
     <string name="event_status_description">Synchroniser uniquement les éléments avec l\'un des statuts RSVP sélectionnés.</string>
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

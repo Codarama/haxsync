@@ -81,5 +81,5 @@
     <string name="token_notification_description">לחץ על מנת להעניק הרשאות</string>
     <string name="event_status">אירועים לסנכרון</string>
     <string name="event_status_description">סנכרן אירועים בעלי סטטוס הגעה ספציפי.</string>
-
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

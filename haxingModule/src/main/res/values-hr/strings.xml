@@ -54,4 +54,5 @@
     <string name="token_notification_title">Nevaljan odgovor</string>
     <string name="token_notification_ticker">Nevaljan odgovor Facebook-a</string>
     <string name="token_notification_description">Dodirni za ponovno odobrenje</string>
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

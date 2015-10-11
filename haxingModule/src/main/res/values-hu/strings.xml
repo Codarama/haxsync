@@ -58,5 +58,5 @@
     <string name="token_notification_description">Érintse meg a jogosultságok újbóli biztosításához</string>
     <string name="event_status">Események szinkronizálása</string>
     <string name="event_status_description">Csak az alábbi, választ igénylő eseményeket szinkronizálja</string>
-
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

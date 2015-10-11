@@ -126,6 +126,5 @@
     <string name="image_primary_description">Kontakte mit mehreren Bilderquellen werden das HaxSync-Bild verwenden.</string>
     <string name="ignore_middle_names">Ignoriere zweiten Vornamen</string>
     <string name="ignore_middle_names_summary">Ignoriert den zweiten Vornamen von Facebookfreunden</string>
-
-
+    <string name="facebook_app_id">892912204090255</string>
 </resources>

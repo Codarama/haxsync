@@ -57,4 +57,5 @@
     <string name="token_notification_description">Dotykem mužete opětovně udělit nutná opravnění</string>
     <string name="event_status">Synchronizované události</string>
     <string name="event_status_description">Synchronizovat pouze události s vybraným stavem</string>
+    <string name="facebook_app_id">892912204090255</string>
 </resources>
