@@ -493,7 +493,6 @@ public class ContactsSyncAdapterService extends Service {
                     if (syncSelf) {
                         addSelfContact(account, maxsize, cropPhotos, faceDetect, force, root, rootSize, cacheDir, google);
                     }
-                    //ArrayList<FacebookFQLFriend> friends = FacebookUtil.getFriendInfo(oldStatus);
                     List<FacebookGraphFriend> friends = FacebookUtil.getFriends(maxsize, addMeToFriends);
                     for (FacebookGraphFriend friend : friends) {
                         String uid = friend.getUserName();

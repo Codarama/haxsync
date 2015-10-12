@@ -115,43 +115,44 @@ public class DeviceUtil {
 
 
     @SuppressLint("NewApi")
-    public static void showJellyBeanNotification(Context context) {
-        if (needsWorkaround(context)) {
-            Intent intent = new Intent(Intent.ACTION_VIEW);
-            intent.setData(Uri.parse("market://details?id=com.haxsync.facebook.workaround"));
-
-
-            Intent cancelIntent = new Intent(context, WorkaroundConfirmation.class);
-
-            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-
-            PendingIntent cancelContentIntent = PendingIntent.getActivity(context, 1, cancelIntent, PendingIntent.FLAG_CANCEL_CURRENT);
-
-            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-
-
-            Resources res = context.getResources();
-            Notification.Builder builder = new Notification.Builder(context);
-
-
-            builder.setContentIntent(contentIntent)
-                    .setSmallIcon(android.R.drawable.stat_notify_more)
-                    .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
-                    .setTicker(res.getString(R.string.jb_warning_ticker))
-                    .setWhen(System.currentTimeMillis())
-                    .setAutoCancel(true)
-                    .setContentTitle(res.getString(R.string.jb_warning_title))
-                    .setContentText(res.getString(R.string.jb_warning_description))
-                    .addAction(android.R.drawable.ic_menu_info_details, context.getString(android.R.string.yes), contentIntent)
-                    .addAction(android.R.drawable.ic_menu_close_clear_cancel, context.getString(android.R.string.no), cancelContentIntent);
-            Notification n = new Notification.BigTextStyle(builder).bigText(context.getString(R.string.workaround_description)).build();
-
-
-            nm.notify(1, n);
-
-        }
-    }
+    // TODO Evaluate if removing the workaround code would have any adverse effects on the code
+//    public static void showJellyBeanNotification(Context context) {
+//        if (needsWorkaround(context)) {
+//            Intent intent = new Intent(Intent.ACTION_VIEW);
+//            intent.setData(Uri.parse("market://details?id=com.haxsync.facebook.workaround"));
+//
+//
+//            Intent cancelIntent = new Intent(context, WorkaroundConfirmation.class);
+//
+//            PendingIntent contentIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+//
+//
+//            PendingIntent cancelContentIntent = PendingIntent.getActivity(context, 1, cancelIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+//
+//            NotificationManager nm = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//
+//            Resources res = context.getResources();
+//            Notification.Builder builder = new Notification.Builder(context);
+//
+//
+//            builder.setContentIntent(contentIntent)
+//                    .setSmallIcon(android.R.drawable.stat_notify_more)
+//                    .setLargeIcon(BitmapFactory.decodeResource(res, R.drawable.icon))
+//                    .setTicker(res.getString(R.string.jb_warning_ticker))
+//                    .setWhen(System.currentTimeMillis())
+//                    .setAutoCancel(true)
+//                    .setContentTitle(res.getString(R.string.jb_warning_title))
+//                    .setContentText(res.getString(R.string.jb_warning_description))
+//                    .addAction(android.R.drawable.ic_menu_info_details, context.getString(android.R.string.yes), contentIntent)
+//                    .addAction(android.R.drawable.ic_menu_close_clear_cancel, context.getString(android.R.string.no), cancelContentIntent);
+//            Notification n = new Notification.BigTextStyle(builder).bigText(context.getString(R.string.workaround_description)).build();
+//
+//
+//            nm.notify(1, n);
+//
+//        }
+//    }
 
 
     public static String saveBytes(byte[] file, File dir) {

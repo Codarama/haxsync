@@ -7,6 +7,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ImageView;
 
+import com.facebook.appevents.AppEventsLogger;
+
 import org.codarama.haxsync.R;
 
 /**
@@ -14,6 +16,22 @@ import org.codarama.haxsync.R;
  * <p>Displayed when the application is started for the first time. Leads to the {@link WizardActivity}.</p>
  */
 public class WelcomeActivity extends Activity {
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        // Logs 'install' and 'app activate' App Events.
+        AppEventsLogger.activateApp(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        // Logs 'app deactivate' App Event.
+        AppEventsLogger.deactivateApp(this);
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
