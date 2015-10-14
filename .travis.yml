@@ -6,5 +6,9 @@ android:
 notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
 
+before_install:
+  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
+  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
+
 # Let's try to build...
 script: ./gradlew connectedCheck coveralls
