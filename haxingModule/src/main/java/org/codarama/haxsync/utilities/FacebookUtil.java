@@ -17,6 +17,7 @@ import android.provider.CalendarContract.Attendees;
 import android.util.Log;
 
 import com.facebook.AccessToken;
+import com.facebook.FacebookSdk;
 import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
@@ -53,6 +54,9 @@ public class FacebookUtil extends Application {
     private static HashMap<String, Long> birthdays = new HashMap<String, Long>();
 
     public static boolean authorize(Context context, Account account) {
+
+        // make sure the SDK is initialized
+        FacebookSdk.sdkInitialize(context);
 
         if (isExtendingToken || !DeviceUtil.isOnline(context)) {
             return false;
@@ -268,8 +272,13 @@ public class FacebookUtil extends Application {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
                         Log.i(TAG, "Received Facebook FQL response : ");
-                        Log.i(TAG, graphResponse.getJSONObject().toString());
-                        response.push(graphResponse.getJSONArray());
+                        if (graphResponse.getJSONArray() != null) {
+                            Log.i(TAG, graphResponse.getJSONArray().toString());
+                            response.push(graphResponse.getJSONArray());
+                        } else {
+                            Log.w(TAG, "Empty result received from Facebook");
+                            response.push(new JSONArray());
+                        }
                     }
                 });
         Bundle parameters = new Bundle();
@@ -294,8 +303,13 @@ public class FacebookUtil extends Application {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
                         Log.i(TAG, "Received Facebook FQL response : ");
-                        Log.i(TAG, graphResponse.getJSONObject().toString());
-                        response.push(graphResponse.getJSONObject());
+                        if (graphResponse.getJSONObject() != null) {
+                            Log.i(TAG, graphResponse.getJSONArray().toString());
+                            response.push(graphResponse.getJSONObject());
+                        } else {
+                            Log.w(TAG, "Empty result received from Facebook");
+                            response.push(new JSONObject());
+                        }
                     }
                 });
         Bundle parameters = new Bundle();
