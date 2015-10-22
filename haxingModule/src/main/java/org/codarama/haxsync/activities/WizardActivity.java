@@ -156,7 +156,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         wizardCheck = (CheckBox) findViewById(R.id.checkHide);
 
         if (loginButton != null) {
-            loginButton.setReadPermissions("user_friends");
+            loginButton.setReadPermissions(FacebookUtil.PERMISSIONS);
             loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {

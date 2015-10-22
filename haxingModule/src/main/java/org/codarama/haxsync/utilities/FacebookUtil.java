@@ -43,6 +43,7 @@ import java.util.TimeZone;
 public class FacebookUtil extends Application {
     public static final int PERMISSION_LEVEL = 1;
     public static final boolean RESPECT_FACEBOOK_POLICY = true;
+    public static final String[] PERMISSIONS = {"user_events"/*calendar*/, "user_friends" /*contacts*/};
     public static Activity activity;
 
     public static boolean isExtendingToken = false;
@@ -66,7 +67,7 @@ public class FacebookUtil extends Application {
 //        DeviceUtil.showJellyBeanNotification(context);
 
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
-        if (accessToken.isExpired()) {
+        if (accessToken == null || accessToken.isExpired()) {
             notifyToken(context);
             return false;
         }
@@ -272,6 +273,11 @@ public class FacebookUtil extends Application {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
                         Log.i(TAG, "Received Facebook FQL response : ");
+
+                        if (graphResponse.getError() != null) {
+                            Log.e(TAG, "Unfortunately Facebook says that " + graphResponse.getError().getErrorMessage(), graphResponse.getError().getException());
+                        }
+
                         if (graphResponse.getJSONArray() != null) {
                             Log.i(TAG, graphResponse.getJSONArray().toString());
                             response.push(graphResponse.getJSONArray());
@@ -303,6 +309,11 @@ public class FacebookUtil extends Application {
                     @Override
                     public void onCompleted(GraphResponse graphResponse) {
                         Log.i(TAG, "Received Facebook FQL response : ");
+
+                        if (graphResponse.getError() != null) {
+                            Log.e(TAG, "Unfortunately Facebook says that " + graphResponse.getError().getErrorMessage(), graphResponse.getError().getException());
+                        }
+
                         if (graphResponse.getJSONObject() != null) {
                             Log.i(TAG, graphResponse.getJSONArray().toString());
                             response.push(graphResponse.getJSONObject());
