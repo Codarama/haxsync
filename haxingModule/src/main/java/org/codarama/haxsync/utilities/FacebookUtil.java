@@ -259,6 +259,7 @@ public class FacebookUtil extends Application {
         return pic;
     }
 
+    @Deprecated
     private static JSONArray queryJSONArray(String query) {
         final Stack<JSONArray> response = new Stack<JSONArray>();
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -295,6 +296,45 @@ public class FacebookUtil extends Application {
         return response.pop();
     }
 
+    private static JSONObject queryJSONObjectNew(String edge, String fields) {
+        final Stack<JSONObject> response = new Stack<JSONObject>();
+        final AccessToken accessToken = AccessToken.getCurrentAccessToken();
+
+        Log.d(TAG, "Executing Graph API request :");
+        Log.d(TAG, "Edge :" + edge);
+        Log.d(TAG, "Fields :" + fields);
+
+        GraphRequest request = GraphRequest.newGraphPathRequest(
+                accessToken,
+                "/" + edge,
+                new GraphRequest.Callback() {
+                    @Override
+                    public void onCompleted(GraphResponse graphResponse) {
+                        Log.i(TAG, "Received Facebook FQL response : ");
+                        Log.d(TAG, graphResponse.getRawResponse());
+
+                        if (graphResponse.getError() != null) {
+                            Log.e(TAG, "Unfortunately Facebook says that " + graphResponse.getError().getErrorMessage(), graphResponse.getError().getException());
+                        }
+
+                        if (graphResponse.getJSONObject() != null) {
+                            Log.i(TAG, graphResponse.getJSONObject().toString());
+                            response.push(graphResponse.getJSONObject());
+                        } else {
+                            Log.w(TAG, "Empty result received from Facebook");
+                            response.push(new JSONObject());
+                        }
+                    }
+                });
+        Bundle parameters = new Bundle();
+        parameters.putString("fields", fields);
+        request.setParameters(parameters);
+        request.executeAndWait();
+
+        return response.pop();
+    }
+
+    @Deprecated
     private static JSONObject queryJSONObject(String query) {
         final Stack<JSONObject> response = new Stack<JSONObject>();
         final AccessToken accessToken = AccessToken.getCurrentAccessToken();
@@ -378,8 +418,11 @@ public class FacebookUtil extends Application {
                     statusString += ", ";
             }
 
-            String request = "SELECT name, eid, start_time, end_time, location, description FROM event WHERE eid IN ( SELECT eid FROM event_member WHERE uid =  me() AND rsvp_status in (" + statusString + "))";
-            JSONArray rawEvents = queryJSONArray(request);
+//            String request = "SELECT name, eid, start_time, end_time, location, description FROM event WHERE eid IN ( SELECT eid FROM event_member WHERE uid =  me() AND rsvp_status in (" + statusString + "))";
+//            JSONArray rawEvents = queryJSONArray(request);
+            // TODO find a way to optimize request so it only returns RSVP events
+            JSONObject rawData = queryJSONObjectNew("me", "events.fields(name, eid, start_time, end_time, description)");
+            JSONArray rawEvents = rawData.getJSONObject("events").getJSONArray("data");
 
             for (int i = 0; i < rawEvents.length(); i++) {
                 events.add(new Event(rawEvents.getJSONObject(i)));
