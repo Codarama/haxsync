@@ -5,7 +5,7 @@ import android.content.Context;
 import android.provider.CalendarContract.Attendees;
 import android.util.Log;
 
-import org.codarama.haxsync.provider.EventAttendee;
+import org.codarama.haxsync.provider.facebook.EventAttendee;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

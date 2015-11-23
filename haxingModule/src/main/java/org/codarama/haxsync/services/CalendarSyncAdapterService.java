@@ -6,35 +6,31 @@ import android.app.Service;
 import android.content.AbstractThreadedSyncAdapter;
 import android.content.ContentProviderClient;
 import android.content.ContentResolver;
-import android.content.ContentUris;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.content.SyncResult;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.IBinder;
 import android.provider.CalendarContract;
-import android.provider.ContactsContract.RawContacts;
-import android.text.format.Time;
 import android.util.Log;
 
-import org.codarama.haxsync.R;
-import org.codarama.haxsync.provider.Event;
-import org.codarama.haxsync.provider.EventAttendee;
-import org.codarama.haxsync.utilities.CalendarUtil;
+import org.codarama.haxsync.SyncPreferences;
+import org.codarama.haxsync.calendar.SyncCalendar;
+import org.codarama.haxsync.provider.facebook.BirthdayRequest;
+import org.codarama.haxsync.provider.facebook.EventRequest;
+import org.codarama.haxsync.provider.facebook.callbacks.BirthdayRequestCallback;
+import org.codarama.haxsync.provider.facebook.callbacks.EventRequestCallback;
 import org.codarama.haxsync.utilities.DeviceUtil;
 import org.codarama.haxsync.utilities.FacebookUtil;
 
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 public class CalendarSyncAdapterService extends Service {
-    private static final String TAG = "CalendarSyncAdapterService";
+    private static final String TAG = "CalendarSyncService";
     private static SyncAdapterImpl sSyncAdapter = null;
     private static ContentResolver mContentResolver = null;
 
@@ -63,53 +59,6 @@ public class CalendarSyncAdapterService extends Service {
 
     }
 
-    private static long createCalendar(Account account, String name, int color) {
-        ContentValues values = new ContentValues();
-        values.put(CalendarContract.Calendars.NAME, name);
-        values.put(CalendarContract.Calendars.CALENDAR_DISPLAY_NAME, name);
-        values.put(CalendarContract.Calendars.CALENDAR_COLOR, color);
-        values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_OWNER);
-        values.put(CalendarContract.Calendars.OWNER_ACCOUNT, account.name);
-        values.put(CalendarContract.Calendars.ACCOUNT_NAME, account.name);
-        values.put(CalendarContract.Calendars.ACCOUNT_TYPE, account.type);
-        values.put(CalendarContract.Calendars.CALENDAR_ACCESS_LEVEL, CalendarContract.Calendars.CAL_ACCESS_READ);
-        values.put(CalendarContract.Calendars.SYNC_EVENTS, 1);
-        values.put(CalendarContract.Calendars.CALENDAR_TIME_ZONE, Time.getCurrentTimezone());
-        Uri calSyncUri = CalendarContract.Calendars.CONTENT_URI.buildUpon()
-                .appendQueryParameter(android.provider.CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, account.name)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, account.type)
-                .build();
-        Uri calUri = mContentResolver.insert(calSyncUri, values);
-        long calId = ContentUris.parseId(calUri);
-        return calId;
-    }
-
-    private static long addBirthday(long calId, String name, long time) {
-        String where = CalendarContract.Events.CALENDAR_ID + " = " + calId + " AND " + CalendarContract.Events.TITLE + " = \"" + name + "\"";
-        Cursor cursor = mContentResolver.query(CalendarContract.Events.CONTENT_URI, new String[]{CalendarContract.Events._ID}, where, null, null);
-        int count = cursor.getCount();
-        if (count == 0) {
-            cursor.close();
-            ContentValues values = new ContentValues();
-            values.put(CalendarContract.Events.DTSTART, time);
-            values.put(CalendarContract.Events.TITLE, name);
-            values.put(CalendarContract.Events.ALL_DAY, 1);
-            values.put(CalendarContract.Events.RRULE, "FREQ=YEARLY");
-            values.put(CalendarContract.Events.CALENDAR_ID, calId);
-            values.put(CalendarContract.Events.DURATION, "P1D");
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, "utc");
-            values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
-            return Long.valueOf(mContentResolver.insert(CalendarContract.Events.CONTENT_URI, values).getLastPathSegment());
-        } else {
-            cursor.moveToFirst();
-            long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
-            cursor.close();
-            return id;
-        }
-
-    }
-
     private static void addReminder(long eventID, long minutes) {
         //delete old reminder
         String where = CalendarContract.Reminders.EVENT_ID + " = " + eventID;
@@ -122,82 +71,6 @@ public class CalendarSyncAdapterService extends Service {
 
         mContentResolver.insert(CalendarContract.Reminders.CONTENT_URI, values);
 
-    }
-
-    private static long addEvent(Account acc, long calId, Event e) {
-
-        String name = e.getName();
-        long start = e.getStartTime();
-        long end = e.getEndTime();
-        String location = e.getLocation();
-        String description = e.getDescription();
-        int rsvp = e.getRsvp();
-        long eid = e.getEventID();
-        Uri insertUri = CalendarContract.Events.CONTENT_URI.buildUpon()
-                .appendQueryParameter(android.provider.CalendarContract.CALLER_IS_SYNCADAPTER, "true")
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_NAME, acc.name)
-                .appendQueryParameter(CalendarContract.Calendars.ACCOUNT_TYPE, acc.type)
-                .build();
-
-        if (eid != -2) {
-            String where = CalendarContract.Events.CALENDAR_ID + " = " + calId + " AND " + CalendarContract.Events._SYNC_ID + " = " + eid;
-            Cursor cursor = mContentResolver.query(CalendarContract.Events.CONTENT_URI,
-                    new String[]{CalendarContract.Events._ID, CalendarContract.Events.TITLE, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND,
-                            CalendarContract.Events.SELF_ATTENDEE_STATUS, CalendarContract.Events.EVENT_LOCATION, CalendarContract.Events.DESCRIPTION}, where, null, null);
-            int count = cursor.getCount();
-            if (count == 0) {
-                cursor.close();
-                ContentValues values = new ContentValues();
-                values.put(CalendarContract.Events.DTSTART, start);
-                values.put(CalendarContract.Events.DTEND, end);
-                values.put(CalendarContract.Events.TITLE, name);
-                values.put(CalendarContract.Events.HAS_ATTENDEE_DATA, true);
-                values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, rsvp);
-                values.put(CalendarContract.Events._SYNC_ID, eid);
-                if (location != null) {
-                    values.put(CalendarContract.Events.EVENT_LOCATION, location);
-                }
-                if (description != null)
-                    values.put(CalendarContract.Events.DESCRIPTION, description);
-                if (rsvp != CalendarContract.Attendees.ATTENDEE_STATUS_ACCEPTED) {
-                    values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
-                } else {
-                    values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                }
-                values.put(CalendarContract.Events.CALENDAR_ID, calId);
-
-                values.put(CalendarContract.Events.EVENT_TIMEZONE, Time.getCurrentTimezone());
-                return Long.valueOf(mContentResolver.insert(insertUri, values).getLastPathSegment());
-            } else {
-                cursor.moveToFirst();
-                long oldstart = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART));
-                long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
-                long oldend = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTEND));
-                String oldlocation = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION));
-                String oldDescription = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.DESCRIPTION));
-                int oldrsvp = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events.SELF_ATTENDEE_STATUS));
-                String oldname = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE));
-                cursor.close();
-                ContentValues values = new ContentValues();
-                if (oldstart != start)
-                    values.put(CalendarContract.Events.DTSTART, start);
-                if (oldend != end)
-                    values.put(CalendarContract.Events.DTEND, end);
-                if (!oldlocation.equals(location))
-                    values.put(CalendarContract.Events.EVENT_LOCATION, location);
-                if (!oldDescription.equals(description))
-                    values.put(CalendarContract.Events.DESCRIPTION, description);
-                if (!oldname.equals(name))
-                    values.put(CalendarContract.Events.TITLE, name);
-                /*if (oldrsvp != rsvp)
-                    values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, rsvp);*/
-                if (values.size() != 0)
-                    mContentResolver.update(CalendarContract.Events.CONTENT_URI, values, CalendarContract.Events._ID + " = ?", new String[]{String.valueOf(id)});
-                return id;
-
-            }
-        }
-        return -1;
     }
 
     public static void removeCalendar(Context context, Account account, String name) {
@@ -229,22 +102,6 @@ public class CalendarSyncAdapterService extends Service {
                 .build();
 
         mContentResolver.update(calcUri, values, CalendarContract.Calendars._ID + " = " + calID, null);
-
-
-    }
-
-    private static Set<String> getFriends(Context context, Account account) {
-        HashSet<String> friends = new HashSet<String>();
-        Uri rawContactUri = RawContacts.CONTENT_URI.buildUpon()
-                .appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
-                .appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
-                .build();
-        Cursor c1 = mContentResolver.query(rawContactUri, new String[]{RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null);
-        while (c1.moveToNext()) {
-            friends.add(c1.getString(0));
-        }
-        c1.close();
-        return friends;
     }
 
     public static void removeReminders(Context context, Account account, String calendarName) {
@@ -284,77 +141,44 @@ public class CalendarSyncAdapterService extends Service {
     private static void performSync(Context context, Account account,
                                     Bundle extras, String authority, ContentProviderClient provider,
                                     SyncResult syncResult) throws OperationCanceledException {
-        mContentResolver = context.getContentResolver();
 
-        SharedPreferences prefs = context.getSharedPreferences(context.getPackageName() + "_preferences", MODE_MULTI_PROCESS);
+        SyncPreferences prefs = new SyncPreferences(context);
+        boolean wifiOnly = prefs.getWiFiOnly();
+        boolean chargingOnly = prefs.getChargingOnly();
 
-        boolean wifiOnly = prefs.getBoolean("wifi_only", false);
-        boolean chargingOnly = prefs.getBoolean("charging_only", false);
         if (!((wifiOnly && !DeviceUtil.isWifi(context)) || (chargingOnly && !DeviceUtil.isCharging(context)))) {
+            Log.i(TAG, "Initiating event sync");
 
             FacebookUtil.refreshPermissions(context);
+            boolean eventSync = prefs.shouldSyncEvents();
+            boolean birthdaySync = prefs.shouldSyncBirthdays();
 
-            boolean eventSync = prefs.getBoolean("sync_events", true);
-            boolean birthdaySync = prefs.getBoolean("sync_birthdays", false);
-            boolean eventReminders = prefs.getBoolean("event_reminders", false);
-            boolean birthdayReminders = prefs.getBoolean("birthday_reminders", false);
-            long eventReminderTime = prefs.getLong("event_reminder_minutes", 30);
-            long birthdayReminderTime = prefs.getLong("birthday_reminder_minutes", 1440);
-            String statuses = prefs.getString("event_status", "attending|unsure");
-            Log.i("event sync", String.valueOf(eventSync));
             if (FacebookUtil.authorize(context, account)) {
-                long birthdayCalendarID = getCalendarID(account, context.getString(R.string.birthday_cal));
+
+                // Part 1. Birthdays sync
                 if (birthdaySync) {
-
-                    if (birthdayCalendarID == -2) {
-                        int birthdayColor = prefs.getInt("birthday_color", 0xff1212);
-                        birthdayCalendarID = createCalendar(account, context.getString(R.string.birthday_cal), birthdayColor);
-                    }
-
-                    boolean phoneOnly = prefs.getBoolean("phone_only_cal", false);
-
-                    HashMap<String, Long> birthdays = FacebookUtil.getBirthdays();
-
-                    Set<String> friends = getFriends(context, account);
-                    Log.i("friends", friends.toString());
-                    if (birthdays != null) {
-                        for (String name : birthdays.keySet()) {
-                            if (!phoneOnly || friends.contains(name)) {
-                                long eventID = addBirthday(birthdayCalendarID, String.format(context.getString(R.string.birthday), name), birthdays.get(name));
-                                if (birthdayReminders)
-                                    addReminder(eventID, birthdayReminderTime);
-                            }
-                        }
-                    }
-                } else if (birthdayCalendarID != -2) {
-                    removeCalendar(context, account, context.getString(R.string.birthday_cal));
+                    BirthdayRequest request = new BirthdayRequest();
+                    BirthdayRequestCallback callback = new BirthdayRequestCallback(context, account);
+                    request.executeAsync(callback);
+                } else {
+                    SyncCalendar calendar = SyncCalendar.getCalendar(context, account, SyncCalendar.CALENDAR_TYPES.BIRTHDAYS);
+                    calendar.removeCalendar();
                 }
 
+                // Part 2. Events sync
                 if (eventSync) {
-                    long eventCalendarID = getCalendarID(account, context.getString(R.string.event_cal));
-                    if (eventCalendarID == -2) {
-                        int color = prefs.getInt("event_color", 0xff2525);
-                        eventCalendarID = createCalendar(account, context.getString(R.string.event_cal), color);
-                    }
-                    List<Event> events = FacebookUtil.getEvents(statuses);
-                    for (Event e : events) {
-                        long eventID = addEvent(account, eventCalendarID, e);
-                        CalendarUtil.removeAttendees(context, eventID);
-                        List<EventAttendee> attendees = FacebookUtil.getEventAttendees(e.getEventID());
-                        for (EventAttendee a : attendees) {
-                            CalendarUtil.addAttendee(context, eventID, a);
-                        }
-                        if (eventReminders && (eventID != -1))
-                            addReminder(eventID, eventReminderTime);
-                    }
+                    final boolean syncMaybe = prefs.shouldSyncMaybe();
 
+                    EventRequest request = new EventRequest(syncMaybe);
+                    EventRequestCallback callback = new EventRequestCallback(context, account);
+                    request.executeAsync(callback);
+                } else {
+                    SyncCalendar calendar = SyncCalendar.getCalendar(context, account, SyncCalendar.CALENDAR_TYPES.EVENTS);
+                    calendar.removeCalendar();
                 }
-
             }
         } else {
-            SharedPreferences.Editor editor = prefs.edit();
-            editor.putBoolean("missed_calendar_sync", true);
-            editor.commit();
+            prefs.setMissedCalendarSync(true);
         }
 
     }
@@ -387,7 +211,7 @@ public class CalendarSyncAdapterService extends Service {
                 CalendarSyncAdapterService.performSync(mContext, account,
                         extras, authority, provider, syncResult);
             } catch (OperationCanceledException e) {
-                Log.e("Error", e.getLocalizedMessage());
+                Log.e("SyncAdapterImpl", e.getLocalizedMessage());
             }
         }
     }

@@ -30,8 +30,8 @@ import com.jjnford.android.util.Shell.ShellException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.codarama.haxsync.R;
-import org.codarama.haxsync.provider.FacebookGraphFriend;
-import org.codarama.haxsync.provider.Status;
+import org.codarama.haxsync.provider.facebook.FacebookGraphFriend;
+import org.codarama.haxsync.provider.facebook.Status;
 import org.codarama.haxsync.utilities.BitmapUtil;
 import org.codarama.haxsync.utilities.ContactUtil;
 import org.codarama.haxsync.utilities.ContactUtil.Photo;

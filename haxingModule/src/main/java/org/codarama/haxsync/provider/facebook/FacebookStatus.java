@@ -1,4 +1,4 @@
-package org.codarama.haxsync.provider;
+package org.codarama.haxsync.provider.facebook;
 
 import android.util.Log;
 

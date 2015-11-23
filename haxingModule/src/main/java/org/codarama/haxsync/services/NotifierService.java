@@ -18,8 +18,8 @@ import android.provider.ContactsContract.StreamItems;
 import android.util.Log;
 
 import org.codarama.haxsync.R;
-import org.codarama.haxsync.provider.FacebookStatus;
-import org.codarama.haxsync.provider.Status;
+import org.codarama.haxsync.provider.facebook.FacebookStatus;
+import org.codarama.haxsync.provider.facebook.Status;
 import org.codarama.haxsync.utilities.DeviceUtil;
 import org.codarama.haxsync.utilities.FacebookUtil;
 import org.codarama.haxsync.utilities.WebUtil;

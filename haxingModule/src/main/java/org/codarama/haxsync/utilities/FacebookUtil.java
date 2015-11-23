@@ -22,12 +22,12 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 
 import org.codarama.haxsync.R;
-import org.codarama.haxsync.provider.Event;
-import org.codarama.haxsync.provider.EventAttendee;
-import org.codarama.haxsync.provider.FacebookFQLFriend;
-import org.codarama.haxsync.provider.FacebookGraphFriend;
-import org.codarama.haxsync.provider.FacebookStatus;
-import org.codarama.haxsync.provider.Status;
+import org.codarama.haxsync.provider.facebook.Event;
+import org.codarama.haxsync.provider.facebook.EventAttendee;
+import org.codarama.haxsync.provider.facebook.FacebookFQLFriend;
+import org.codarama.haxsync.provider.facebook.FacebookGraphFriend;
+import org.codarama.haxsync.provider.facebook.FacebookStatus;
+import org.codarama.haxsync.provider.facebook.Status;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -60,7 +60,7 @@ public class FacebookUtil extends Application {
         FacebookSdk.sdkInitialize(context);
 
         if (isExtendingToken || !DeviceUtil.isOnline(context)) {
-            return false;
+            return true; // false
         }
 
         // TODO Evaluate if removing the workaround code would have any adverse effects on the code
@@ -69,7 +69,7 @@ public class FacebookUtil extends Application {
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken == null || accessToken.isExpired()) {
             notifyToken(context);
-            return false;
+            return true; // false
         }
 
         return true;
@@ -418,11 +418,8 @@ public class FacebookUtil extends Application {
                     statusString += ", ";
             }
 
-//            String request = "SELECT name, eid, start_time, end_time, location, description FROM event WHERE eid IN ( SELECT eid FROM event_member WHERE uid =  me() AND rsvp_status in (" + statusString + "))";
-//            JSONArray rawEvents = queryJSONArray(request);
-            // TODO find a way to optimize request so it only returns RSVP events
-            JSONObject rawData = queryJSONObjectNew("me", "events.fields(name, eid, start_time, end_time, description)");
-            JSONArray rawEvents = rawData.getJSONObject("events").getJSONArray("data");
+            String request = "SELECT name, eid, start_time, end_time, location, description FROM event WHERE eid IN ( SELECT eid FROM event_member WHERE uid =  me() AND rsvp_status in (" + statusString + "))";
+            JSONArray rawEvents = queryJSONArray(request);
 
             for (int i = 0; i < rawEvents.length(); i++) {
                 events.add(new Event(rawEvents.getJSONObject(i)));
