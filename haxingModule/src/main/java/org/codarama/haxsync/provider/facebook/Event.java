@@ -7,6 +7,9 @@ import org.codarama.haxsync.utilities.CalendarUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+/**
+ * <p>Represents a Facebook event, extracted from the graph API</p>
+ */
 public class Event {
 
     private static final String TAG = "Event";

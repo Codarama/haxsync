@@ -21,6 +21,11 @@ import android.util.Log;
 import com.facebook.AccessToken;
 import com.facebook.GraphRequest;
 
+import java.util.Calendar;
+
+/**
+ *
+ */
 public class EventRequest {
     private static final String TAG = "EventRequest";
     private static final String ATTENDING_EVENTS_EDGE = "me/events/attending";
@@ -33,13 +38,10 @@ public class EventRequest {
     }
 
     public void executeAsync(GraphRequest.Callback callback) {
-        String edge = ATTENDING_EVENTS_EDGE;
-        String fields = EVENT_FIELDS;
-        executeRequest(edge, fields, callback);
+        executeRequest(ATTENDING_EVENTS_EDGE, EVENT_FIELDS, callback);
 
         if (includeMaybe) {
-            fields = MAYBE_EVENTS_EDGE;
-            executeRequest(edge, fields, callback);
+            executeRequest(MAYBE_EVENTS_EDGE, EVENT_FIELDS, callback);
         }
     }
 
@@ -53,6 +55,7 @@ public class EventRequest {
         GraphRequest request = GraphRequest.newGraphPathRequest(accessToken, edge, callback);
         Bundle parameters = new Bundle();
         parameters.putString("fields", fields);
+        parameters.putString("since", Calendar.getInstance().getTime().toString());
         request.setParameters(parameters);
         request.executeAsync();
     }
