@@ -32,16 +32,16 @@ Q&A
 ---
 **What are the next steps?**
 
-:heavy_check_mark: Clean up project, set up build and test infrastructure
-:heavy_multiplication_x: Test current functionality, fix any bugs that were introduced during the transition
-:heavy_multiplication_x: Workaround issues with Facebook Android API
-:heavy_multiplication_x: Release a new version via Google Play
+1. :heavy_check_mark: Clean up project, set up build and test infrastructure
+2. :heavy_multiplication_x: Test current functionality, fix any bugs that were introduced during the transition
+3. :heavy_multiplication_x: Workaround issues with Facebook Android API
+4. :heavy_multiplication_x: Release a new version via Google Play
 
 **What ambitious future plans do you have?**
 
-:heavy_check_mark: Upgrade APIs to latest versions
-:heavy_multiplication_x: Remove dependencies on stale 3rd party libs
-:heavy_multiplication_x: Sync from new social media sources
+1. :heavy_check_mark: Upgrade APIs to latest versions
+2. :heavy_multiplication_x: Remove dependencies on stale 3rd party libs
+3. :heavy_multiplication_x: Sync from new social media sources
 
 **Why did you change the package structure?**
 
