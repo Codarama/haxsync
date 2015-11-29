@@ -32,10 +32,10 @@ Q&A
 ---
 **What are the next steps?**
 
-1. Clean up project, set up build and test infrastructure
-2. Test current functionality, fix any bugs that were introduced during the transition
-3. Workaround issues with Facebook Android API
-4. Release a new version via Google Play
+1. :heavy_check_mark: Clean up project, set up build and test infrastructure
+2. :heavy_multiplication_x: Test current functionality, fix any bugs that were introduced during the transition
+3. :heavy_multiplication_x: Workaround issues with Facebook Android API
+4. :heavy_multiplication_x: Release a new version via Google Play
 
 **What ambitious future plans do you have?**
 
