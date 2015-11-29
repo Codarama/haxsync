@@ -24,7 +24,13 @@ Current state
 [![Dependency Status](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1)
 [![License](http://img.shields.io/:license-GPL2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
-The project is currently **unstable**.
+| Status                  | Feature              |
+| :---------------------: | -------------------- |
+|    :white_check_mark:   | Event Sync           |
+|   :x:                   | Event Attendee Sync  |
+|   :x:                   | Birthday Sync        |
+|   :x:                   | Friend List Sync     |
+|   :x:                   | Friends Photo Sync   |
 
 The project is currently **not available for download** at Google Play.
 
