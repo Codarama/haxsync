@@ -16,10 +16,18 @@ public class Event {
 
     private JSONObject json;
 
+    /**
+     * <p>Calendar</p>
+     *
+     * @param json the {@link JSONObject} containing data about this event
+     */
     public Event(JSONObject json) {
         this.json = json;
     }
 
+    /**
+     * @return the ID of the event in Facebook
+     */
     public long getEventID() {
         try {
             return json.getLong("id");
@@ -29,6 +37,9 @@ public class Event {
         }
     }
 
+    /**
+     * @return the location where this event is taking place in
+     */
     public String getLocation() {
         try {
             return json.getJSONObject("place").getString("name");
@@ -38,37 +49,36 @@ public class Event {
         }
     }
 
+    /**
+     * @return the start time of this event
+     */
     public long getStartTime() {
         try {
-            return CalendarUtil.convertTime(json.getLong("start_time") * 1000);
+            String timeString = json.getString("start_time");
+            return CalendarUtil.ISOtoEpoch(timeString);
         } catch (JSONException e) {
-            try {
-                String timeString = json.getString("start_time");
-                return CalendarUtil.ISOtoEpoch(timeString);
-            } catch (JSONException e1) {
-                Log.e("Error", e.getLocalizedMessage());
-                return -2;
-            }
+            Log.e(TAG, "Unable to parse event start time, because " + e.getMessage(), e);
+            return -2;
         }
     }
 
+    /**
+     * @return the end time of this event, or start time if no end time is returned
+     */
     public long getEndTime() {
         try {
-            return CalendarUtil.convertTime(json.getLong("end_time") * 1000);
+            String timeString = json.getString("end_time");
+            return CalendarUtil.ISOtoEpoch(timeString);
         } catch (JSONException e) {
-            try {
-                String timeString = json.getString("end_time");
-                if (timeString.equals("null")) {
-                    return getStartTime();
-                }
-                return CalendarUtil.ISOtoEpoch(timeString);
-            } catch (JSONException e1) {
-                Log.e(TAG, "Unable to parse event end time, because " + e.getMessage(), e);
-                return -2;
-            }
+            Log.e(TAG, "Unable to parse event end time, because " + e.getMessage(), e);
+            Log.i(TAG, "Falling back to start time.");
+            return getStartTime();
         }
     }
 
+    /**
+     * @return the description of this event
+     */
     public String getDescription() {
         try {
             return json.getString("description");
@@ -78,6 +88,9 @@ public class Event {
         }
     }
 
+    /**
+     * @return the name of this event
+     */
     public String getName() {
         try {
             return json.getString("name");
@@ -87,6 +100,10 @@ public class Event {
         }
     }
 
+    /**
+     * @return the RSVP status for this event
+     * @see android.provider.CalendarContract.Attendees
+     */
     public int getRsvp() {
         try {
             return fromFacebookStatus(json.getString("rsvp_status"));

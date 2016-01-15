@@ -7,62 +7,34 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 public class EventAttendee {
-    private String name;
-    private String email;
-    private int status;
+    private static final String TAG = "EventAttendee";
+
+    private final JSONObject rawdata;
 
     public EventAttendee(JSONObject json) {
-
-        //initialize status
-        String statusString = "";
-        try {
-            statusString = json.getString("rsvp_status");
-        } catch (JSONException e) {
-            Log.e("Error", e.getLocalizedMessage());
-        }
-        status = FacebookUtil.convertStatus(statusString);
-
-        //initialize lame @facebook.com email because the API doesn't allow anything else
-        try {
-            email = json.getString("username") + "@facebook.com";
-        } catch (JSONException e) {
-            Log.e("Error", e.getLocalizedMessage());
-        }
-
-
-        //initialize name
-        try {
-            name = json.getString("name");
-        } catch (JSONException e) {
-            Log.e("Error", e.getLocalizedMessage());
-        }
+        rawdata = json;
     }
-
-    public EventAttendee(String name, String email, int status) {
-        this.name = name;
-        this.email = email;
-        this.status = status;
-    }
-
 
     public int getAttendeeStatus() {
-        return status;
+        try {
+            return FacebookUtil.convertStatus(rawdata.getString("rsvp_status"));
+        } catch (JSONException e) {
+            Log.e(TAG, "Unable to extract data about event attendee RSVP status", e);
+            return 1;
+        }
     }
-
-    //returns lame @facebook.com email because the API doesn't allow anything else
-    public String getEmail() {
-        return email;
-    }
-
 
     public String getName() {
-        return name;
+        try {
+            return rawdata.getString("name");
+        } catch (JSONException e) {
+            Log.e(TAG, "Unable to extract data about event attendee name", e);
+            return "John Doe";
+        }
     }
 
     @Override
     public String toString() {
-        return "name: " + name + ", email: " + email + ", status: " + status;
+        return "(name: " + getName() + " status: " + getAttendeeStatus() + ")";
     }
-
-
 }

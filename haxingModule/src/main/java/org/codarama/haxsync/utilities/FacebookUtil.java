@@ -595,7 +595,7 @@ public class FacebookUtil extends Application {
     public static int convertStatus(String statusString) {
         if (statusString.equals("attending")) {
             return Attendees.ATTENDEE_STATUS_ACCEPTED;
-        } else if (statusString.equals("unsure")) {
+        } else if (statusString.equals("maybe")) {
             return Attendees.ATTENDEE_STATUS_TENTATIVE;
         } else if (statusString.equals("declined")) {
             return Attendees.ATTENDEE_STATUS_DECLINED;

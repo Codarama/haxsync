@@ -29,6 +29,7 @@ import android.util.Log;
 import org.codarama.haxsync.R;
 import org.codarama.haxsync.SyncPreferences;
 import org.codarama.haxsync.provider.facebook.Event;
+import org.codarama.haxsync.provider.facebook.EventAttendee;
 
 /**
  * <p>The application should use this class to manage it's own calendars, such as calendars for
@@ -179,6 +180,20 @@ public class SyncCalendar {
             }
         }
         return -1;
+    }
+
+    public void addAttendee(Context c, long eventID, EventAttendee attendee) {
+        ContentValues cv = new ContentValues();
+        cv.put(CalendarContract.Attendees.ATTENDEE_NAME, attendee.getName());
+        cv.put(CalendarContract.Attendees.EVENT_ID, eventID);
+        cv.put(CalendarContract.Attendees.ATTENDEE_STATUS, attendee.getAttendeeStatus());
+
+        c.getContentResolver().insert(CalendarContract.Attendees.CONTENT_URI, cv);
+    }
+
+    public void removeAttendees(Context c, long eventID) {
+        String where = CalendarContract.Attendees.EVENT_ID + " = '" + eventID + "'";
+        c.getContentResolver().delete(CalendarContract.Attendees.CONTENT_URI, where, null);
     }
 
     /**

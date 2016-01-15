@@ -19,7 +19,6 @@ public class CalendarUtil {
     public static void addAttendee(Context c, long eventID, EventAttendee attendee) {
         ContentValues cv = new ContentValues();
         cv.put(Attendees.ATTENDEE_NAME, attendee.getName());
-        cv.put(Attendees.ATTENDEE_EMAIL, attendee.getEmail());
         cv.put(Attendees.EVENT_ID, eventID);
         cv.put(Attendees.ATTENDEE_STATUS, attendee.getAttendeeStatus());
 
