@@ -24,13 +24,15 @@ Current state
 [![Dependency Status](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1)
 [![License](http://img.shields.io/:license-GPL2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
-| Status                  | Feature              |
-| :---------------------: | -------------------- |
-|    :white_check_mark:   | Event Sync           |
-|   :x:                   | Event Attendee Sync  |
-|   :x:                   | Birthday Sync        |
-|   :x:                   | Friend List Sync     |
-|   :x:                   | Friends Photo Sync   |
+| Priority  | Status                  | Feature              | Percentage complete |
+| :-------: | ----------------------- | -------------------- | ------------------- |
+|1          |   :x:                   | Friends Photo Sync   |                  75%|
+|2          |   :x:                   | Friend List Sync     |                   0%|
+|3          |   :white_check_mark:    | Event Sync           |                 100%|
+|4          |   :x:                   | Event Attendee Sync  |                   0%|
+|5          |   :x:                   | Birthday Sync        |                   0%|
+
+
 
 The project is currently **not available for download** at Google Play.
 
