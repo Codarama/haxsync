@@ -1,5 +1,6 @@
 package org.codarama.haxsync.utilities;
 
+import android.content.ContentResolver;
 import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
@@ -15,9 +16,9 @@ import java.io.ByteArrayOutputStream;
 
 public class BitmapUtil {
 
-    public static int getMaxSize(Context context) {
+    public static int getMaxSize(ContentResolver resolver) {
         // Note that this URI is safe to call on the UI thread.
-        Cursor c = context.getContentResolver().query(DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
+        Cursor c = resolver.query(DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
                 new String[]{DisplayPhoto.DISPLAY_MAX_DIM}, null, null, null);
         try {
             c.moveToFirst();

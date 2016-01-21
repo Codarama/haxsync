@@ -186,6 +186,22 @@
         </service>
 
         <service
+            android:name=".services.ContactPhotoSyncService"
+            android:exported="true"
+            android:process=":contacts">
+            <intent-filter>
+                <action android:name="android.content.SyncAdapter" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.content.SyncAdapter"
+                android:resource="@xml/sync_contact_photo" />
+            <meta-data
+                android:name="android.provider.CONTACTS_STRUCTURE"
+                android:resource="@xml/contacts" />
+        </service>
+
+        <service
             android:name=".services.CalendarSyncAdapterService"
             android:exported="true"
             android:process=":calendar">

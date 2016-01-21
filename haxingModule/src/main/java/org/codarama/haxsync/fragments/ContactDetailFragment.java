@@ -280,7 +280,7 @@ public class ContactDetailFragment extends Fragment {
             SharedPreferences prefs = ContactDetailFragment.this.getActivity().getSharedPreferences(ContactDetailFragment.this.getActivity().getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS);
             boolean cropPhotos = prefs.getBoolean("crop_square", true);
             boolean faceDetect = prefs.getBoolean("face_detect", true);
-            int maxSize = BitmapUtil.getMaxSize(ContactDetailFragment.this.getActivity());
+            int maxSize = BitmapUtil.getMaxSize(ContactDetailFragment.this.getActivity().getContentResolver());
             if (cropPhotos)
                 image = BitmapUtil.resize(image, maxSize, faceDetect);
             ContactUtil.Photo photo = new Photo();

@@ -34,6 +34,7 @@ public class SyncPreferences {
 
     private final Context context;
     private final SharedPreferences prefs;
+    private boolean forceSync;
 
     public SyncPreferences(Context context) {
         this.context = context;
@@ -93,5 +94,21 @@ public class SyncPreferences {
 
     public boolean syncPhoneContectsOnly() {
         return prefs.getBoolean("phone_only_cal", false);
+    }
+
+    public boolean getForceSync() {
+        return prefs.getBoolean("force_dl", false);
+    }
+
+    public boolean getRootEnabled() {
+        return prefs.getBoolean("root_enabled", false);
+    }
+
+    public boolean shouldUpdateGooglePhotos() {
+        return prefs.getBoolean("update_google_photos", false);
+    }
+
+    public boolean shouldBePrimaryImage() {
+        return prefs.getBoolean("image_primary", true);
     }
 }

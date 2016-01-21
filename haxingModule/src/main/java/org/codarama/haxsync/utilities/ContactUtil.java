@@ -211,8 +211,6 @@ public class ContactUtil {
     public static void updateContactPhoto(ContentResolver c, long rawContactId, Photo pic, boolean primary) {
         ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
 
-
-        //insert new picture
         try {
             if (pic.data != null) {
                 //delete old picture
@@ -237,12 +235,10 @@ public class ContactUtil {
             }
             c.applyBatch(ContactsContract.AUTHORITY, operationList);
 
-        } catch (Exception e) {
+        } catch (RemoteException | OperationApplicationException e) {
             // TODO Auto-generated catch block
-            Log.e("ERROR:", e.toString());
+            Log.e(TAG, "Issue while updating contact photo", e);
         }
-
-
     }
 
     public static void removeBirthdays(Context c, long rawContactId) {

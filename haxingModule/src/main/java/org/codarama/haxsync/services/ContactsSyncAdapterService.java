@@ -49,6 +49,18 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+/**
+ * This class is scheduled for immanent destruction due, amongst other things : it being large, not
+ * conforming to the single responsibility principle, etc.
+ *
+ * Ideally it's functions would be split into several different classes:
+ * - SyncAdapter for contact photos
+ * - SyncAdapter for facebook contacts (if such is deemed possible to write)
+ * - HTCDataManager for managing HTCData
+ * - SyncContacts for managing imported facebook/other contacts
+ * - etc
+ */
+@Deprecated
 public class ContactsSyncAdapterService extends Service {
     private static final String TAG = "ContactsSyncAdapterService";
     public static ContentResolver mContentResolver = null;
@@ -312,7 +324,7 @@ public class ContactsSyncAdapterService extends Service {
                 byte[] origPhoto = photo;
 
 			/*if(square)
-				photo = BitmapUtil.resize(photo, maxSize, faceDetect);*/
+                photo = BitmapUtil.resize(photo, maxSize, faceDetect);*/
 
                 ContactUtil.Photo photoi = new Photo();
                 photoi.data = photo;
@@ -484,7 +496,7 @@ public class ContactsSyncAdapterService extends Service {
             Log.i(TAG, "ignoring middle names : " + String.valueOf(ignoreMiddleaNames));
             Log.i(TAG, "add me to friends : " + String.valueOf(addMeToFriends));
             boolean chargingOnly = prefs.getBoolean("charging_only", false);
-            int maxsize = BitmapUtil.getMaxSize(context);
+            int maxsize = BitmapUtil.getMaxSize(context.getContentResolver());
             File cacheDir = context.getCacheDir();
             Log.i("CACHE DIR", cacheDir.getAbsolutePath());
             Log.i("MAX IMAGE SIZE", String.valueOf(maxsize));
@@ -501,7 +513,9 @@ public class ContactsSyncAdapterService extends Service {
                             String match = matches(names.keySet(), friendName, fuzziness);
 
                             if (!(phoneOnly && (match == null) && !uids.containsKey(uid)) || addFriends.contains(friendName)) {
-                                //add contact
+                                // STEP 1. Add contact - if the contact is not part of the HTCData records and does not match any
+                                // of the fuzziness names we add them to the list of contacts with the intention to make them available
+                                // for manual merge (I guess)
                                 if (localContacts.get(uid) == null) {
                                     //String name = friend.getString("name");
                                     //Log.i(TAG, name + " already on phone: " + Boolean.toString(names.contains(name)));
@@ -532,7 +546,7 @@ public class ContactsSyncAdapterService extends Service {
                                 }
 
 
-                                // set contact photo
+                                // STEP 2. Set contact photo
 
                                 SyncEntry contact = localContacts.get(uid);
 
