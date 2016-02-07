@@ -212,9 +212,10 @@ public class Preferences extends PreferenceActivity {
                         .appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
                         .appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
                         .build();
-                Cursor c1 = context.getContentResolver().query(rawContactUri, new String[]{BaseColumns._ID}, null, null, null);
-                while (c1.moveToNext()) {
-                    ContactUtil.removeBirthdays(context, c1.getLong(c1.getColumnIndex(BaseColumns._ID)));
+                try (Cursor c1 = context.getContentResolver().query(rawContactUri, new String[]{BaseColumns._ID}, null, null, null)) {
+                    while (c1.moveToNext()) {
+                        ContactUtil.removeBirthdays(context, c1.getLong(c1.getColumnIndex(BaseColumns._ID)));
+                    }
                 }
 
                 return null;
@@ -238,7 +239,7 @@ public class Preferences extends PreferenceActivity {
                 HashSet<Long> rawIds = new HashSet<Long>();
                 ContentResolver mContentResolver = context.getContentResolver();
                 /*				Uri rawContactUri = RawContacts.CONTENT_URI.buildUpon()
-						.appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
+                        .appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
 						.appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
 						.build();
 				 * Cursor c1 = mContentResolver.query(rawContactUri, new String[] { BaseColumns._ID , RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null);
@@ -282,9 +283,10 @@ public class Preferences extends PreferenceActivity {
                         .appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
                         .appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
                         .build();
-                Cursor c1 = context.getContentResolver().query(rawContactUri, new String[]{BaseColumns._ID}, null, null, null);
-                while (c1.moveToNext()) {
-                    ContactUtil.removeEmails(context, c1.getLong(c1.getColumnIndex(BaseColumns._ID)));
+                try (Cursor c1 = context.getContentResolver().query(rawContactUri, new String[]{BaseColumns._ID}, null, null, null)) {
+                    while (c1.moveToNext()) {
+                        ContactUtil.removeEmails(context, c1.getLong(c1.getColumnIndex(BaseColumns._ID)));
+                    }
                 }
 
                 return null;

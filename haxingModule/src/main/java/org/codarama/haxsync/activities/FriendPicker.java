@@ -122,17 +122,19 @@ final class FriendWorker extends AsyncTask<Void, Void, String[]> {
                         .appendQueryParameter(RawContacts.ACCOUNT_NAME, account.name)
                         .appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
                         .build();
-                Cursor cursor = parent.getContentResolver().query(rawContactUri, new String[]{RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null);
-                HashSet<String> existing = new HashSet<String>();
-                while (cursor.moveToNext()) {
-                    existing.add(cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY)));
-                }
+                try (Cursor cursor = parent.getContentResolver().query(rawContactUri, new String[]{RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null)) {
+                    HashSet<String> existing = new HashSet<String>();
+                    while (cursor.moveToNext()) {
+                        existing.add(cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY)));
+                    }
 
-                if (friends != null) {
-                    for (int i = 0; i < friends.length(); i++) {
-                        String name = friends.getJSONObject(i).getString("name");
-                        if (!existing.contains(name))
-                            friendslist.add(name);
+                    if (friends != null) {
+                        for (int i = 0; i < friends.length(); i++) {
+                            String name = friends.getJSONObject(i).getString("name");
+                            if (!existing.contains(name)) {
+                                friendslist.add(name);
+                            }
+                        }
                     }
                 }
             }

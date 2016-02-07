@@ -101,21 +101,21 @@ public class GoogleBackup extends Activity {
                         .appendQueryParameter(RawContacts.ACCOUNT_TYPE, "com.google")
                         .build();
                 ContentResolver resolver = parent.getContentResolver();
-                Cursor c1 = resolver.query(rawContactUri, new String[]{BaseColumns._ID, RawContacts.CONTACT_ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.SYNC1}, null, null, null);
-                while (c1.moveToNext()) {
-                    long contactID = c1.getLong(c1.getColumnIndex(RawContacts.CONTACT_ID));
-                    Cursor c2 = resolver.query(googleUri, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'", null, null);
-                    if (c2.getCount() > 0) {
-                        c2.moveToFirst();
-                        contactName = c1.getString(c1.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
-                        ContactsService manager = new ContactsService(resolver);
-                        manager.writeHTCData(c2.getLong(c2.getColumnIndex(BaseColumns._ID)), selfID, c1.getString(c1.getColumnIndex(RawContacts.SYNC1)));
-                        publishProgress((int) ((c1.getPosition() / (float) c1.getCount()) * 100));
+                try (Cursor c1 = resolver.query(rawContactUri, new String[]{BaseColumns._ID, RawContacts.CONTACT_ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.SYNC1}, null, null, null)) {
+                    while (c1.moveToNext()) {
+                        long contactID = c1.getLong(c1.getColumnIndex(RawContacts.CONTACT_ID));
+                        try (Cursor c2 = resolver.query(googleUri, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'", null, null)) {
+                            if (c2.getCount() > 0) {
+                                c2.moveToFirst();
+                                contactName = c1.getString(c1.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
+                                ContactsService manager = new ContactsService(resolver);
+                                manager.writeHTCData(c2.getLong(c2.getColumnIndex(BaseColumns._ID)), selfID, c1.getString(c1.getColumnIndex(RawContacts.SYNC1)));
+                                publishProgress((int) ((c1.getPosition() / (float) c1.getCount()) * 100));
 
+                            }
+                        }
                     }
-                    c2.close();
                 }
-                c1.close();
                 ContentResolver.requestSync(googleAcc, ContactsContract.AUTHORITY, new Bundle());
                 return true;
             } else {

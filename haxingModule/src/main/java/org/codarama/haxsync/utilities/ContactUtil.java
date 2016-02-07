@@ -38,18 +38,17 @@ public class ContactUtil {
                 .appendQueryParameter(RawContacts.ACCOUNT_TYPE, account.type)
                 .build();
 
-        Cursor cursor = c.getContentResolver().query(ContactUri, new String[]{BaseColumns._ID, RawContacts.DISPLAY_NAME_PRIMARY}, RawContacts.CONTACT_ID + " = '" + contactID + "'", null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            Contact contact = new Contact();
-            contact.ID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
-            contact.name = cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
-            cursor.close();
-            return contact;
+        try (Cursor cursor = c.getContentResolver().query(ContactUri, new String[]{BaseColumns._ID, RawContacts.DISPLAY_NAME_PRIMARY}, RawContacts.CONTACT_ID + " = '" + contactID + "'", null, null)) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                Contact contact = new Contact();
+                contact.ID = cursor.getLong(cursor.getColumnIndex(BaseColumns._ID));
+                contact.name = cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
+                cursor.close();
+                return contact;
+            }
         }
-        cursor.close();
         return null;
-
     }
 
     private static void fillIcons(Context c) {
@@ -66,35 +65,32 @@ public class ContactUtil {
     }
 
     public static List<HashMap<String, Object>> getMergedContacts(Context c, long rawContactID) {
-
-
-        Cursor cursor = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null);
         ArrayList<HashMap<String, Object>> contacts = new ArrayList<HashMap<String, Object>>();
 
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
-            Cursor c2 = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.ACCOUNT_TYPE}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID, null, null);
-            while (c2.moveToNext()) {
-                HashMap<String, Object> contact = new HashMap<String, Object>();
-                contact.put("name", c2.getString(c2.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY)));
-                contact.put("id", c2.getString(c2.getColumnIndex(BaseColumns._ID)));
-                Drawable icon;
-                //todo: cache this shit
-                fillIcons(c);
-                try {
-                    icon = accountIcons.get(c2.getString(c2.getColumnIndex(RawContacts.ACCOUNT_TYPE)));
-                } catch (Exception e) {
-                    fillIcons(c);
-                    icon = accountIcons.get(c2.getString(c2.getColumnIndex(RawContacts.ACCOUNT_TYPE)));
+        try (Cursor cursor = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null)) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
+                try (Cursor c2 = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.ACCOUNT_TYPE}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID, null, null)) {
+                    while (c2.moveToNext()) {
+                        HashMap<String, Object> contact = new HashMap<String, Object>();
+                        contact.put("name", c2.getString(c2.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY)));
+                        contact.put("id", c2.getString(c2.getColumnIndex(BaseColumns._ID)));
+                        Drawable icon;
+                        //todo: cache this shit
+                        fillIcons(c);
+                        try {
+                            icon = accountIcons.get(c2.getString(c2.getColumnIndex(RawContacts.ACCOUNT_TYPE)));
+                        } catch (Exception e) {
+                            fillIcons(c);
+                            icon = accountIcons.get(c2.getString(c2.getColumnIndex(RawContacts.ACCOUNT_TYPE)));
+                        }
+                        contact.put("icon", icon);
+                        contacts.add(contact);
+                    }
                 }
-                contact.put("icon", icon);
-                contacts.add(contact);
             }
-            c2.close();
-
         }
-        cursor.close();
         return contacts;
 
     }
@@ -110,29 +106,29 @@ public class ContactUtil {
 
     private static Set<Long> getRawContacts(Context c, long contactID, long rawContactID) {
         HashSet<Long> ids = new HashSet<Long>();
-        Cursor c2 = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID, null, null);
-        while (c2.moveToNext()) {
-            ids.add(c2.getLong(c2.getColumnIndex(BaseColumns._ID)));
+        try (Cursor c2 = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID, null, null)) {
+            while (c2.moveToNext()) {
+                ids.add(c2.getLong(c2.getColumnIndex(BaseColumns._ID)));
+            }
         }
-        c2.close();
         return ids;
     }
 
     public static Set<Long> getRawContacts(ContentResolver c, long rawContactID, String accountType) {
         HashSet<Long> ids = new HashSet<Long>();
-        Cursor cursor = c.query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null);
-        if (cursor.getCount() > 0) {
-            cursor.moveToFirst();
-            long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
-            //	Log.i("QUERY", RawContacts.CONTACT_ID +" = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " +rawContactID + " AND " + RawContacts.ACCOUNT_TYPE + " = '" + accountType+"'");
-            Cursor c2 = c.query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID + " AND " + RawContacts.ACCOUNT_TYPE + " = '" + accountType + "'", null, null);
-            //	Log.i("CURSOR SIZE", String.valueOf(c2.getCount()));
-            while (c2.moveToNext()) {
-                ids.add(c2.getLong(c2.getColumnIndex(BaseColumns._ID)));
+        try (Cursor cursor = c.query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null)) {
+            if (cursor.getCount() > 0) {
+                cursor.moveToFirst();
+                long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
+                //	Log.i("QUERY", RawContacts.CONTACT_ID +" = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " +rawContactID + " AND " + RawContacts.ACCOUNT_TYPE + " = '" + accountType+"'");
+                try (Cursor c2 = c.query(RawContacts.CONTENT_URI, new String[]{BaseColumns._ID}, RawContacts.CONTACT_ID + " = '" + contactID + "'" + " AND " + BaseColumns._ID + " != " + rawContactID + " AND " + RawContacts.ACCOUNT_TYPE + " = '" + accountType + "'", null, null)) {
+                    //	Log.i("CURSOR SIZE", String.valueOf(c2.getCount()));
+                    while (c2.moveToNext()) {
+                        ids.add(c2.getLong(c2.getColumnIndex(BaseColumns._ID)));
+                    }
+                }
             }
-            c2.close();
         }
-        cursor.close();
         return ids;
     }
 
@@ -163,32 +159,32 @@ public class ContactUtil {
 
     public static void seperate(Context c, long rawContactID) {
         ArrayList<ContentProviderOperation> operationList = new ArrayList<ContentProviderOperation>();
-        Cursor cursor = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null);
-        if (cursor.moveToFirst()) {
-            long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
-            Set<Long> ids = getRawContacts(c, contactID, rawContactID);
-            for (long id : ids) {
-                ContentProviderOperation.Builder builder = ContentProviderOperation
-                        .newUpdate(ContactsContract.AggregationExceptions.CONTENT_URI);
-                builder.withValue(
-                        ContactsContract.AggregationExceptions.RAW_CONTACT_ID1, rawContactID);
-                builder.withValue(
-                        ContactsContract.AggregationExceptions.RAW_CONTACT_ID2, id);
-                builder.withValue(
-                        ContactsContract.AggregationExceptions.TYPE, ContactsContract.AggregationExceptions.TYPE_KEEP_SEPARATE);
-                operationList.add(builder.build());
-            }
-
-            if (operationList.size() > 0)
-                try {
-                    c.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operationList);
-                } catch (RemoteException e) {
-                    Log.e("Error", e.getLocalizedMessage());
-                } catch (OperationApplicationException e) {
-                    Log.e("Error", e.getLocalizedMessage());
+        try (Cursor cursor = c.getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, RawContacts._ID + " = '" + rawContactID + "'", null, null)) {
+            if (cursor.moveToFirst()) {
+                long contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
+                Set<Long> ids = getRawContacts(c, contactID, rawContactID);
+                for (long id : ids) {
+                    ContentProviderOperation.Builder builder = ContentProviderOperation
+                            .newUpdate(ContactsContract.AggregationExceptions.CONTENT_URI);
+                    builder.withValue(
+                            ContactsContract.AggregationExceptions.RAW_CONTACT_ID1, rawContactID);
+                    builder.withValue(
+                            ContactsContract.AggregationExceptions.RAW_CONTACT_ID2, id);
+                    builder.withValue(
+                            ContactsContract.AggregationExceptions.TYPE, ContactsContract.AggregationExceptions.TYPE_KEEP_SEPARATE);
+                    operationList.add(builder.build());
                 }
+
+                if (operationList.size() > 0)
+                    try {
+                        c.getContentResolver().applyBatch(ContactsContract.AUTHORITY, operationList);
+                    } catch (RemoteException e) {
+                        Log.e("Error", e.getLocalizedMessage());
+                    } catch (OperationApplicationException e) {
+                        Log.e("Error", e.getLocalizedMessage());
+                    }
+            }
         }
-        cursor.close();
     }
 
     public static Photo getPhoto(ContentResolver c, long rawContactId) {
@@ -197,14 +193,14 @@ public class ContactUtil {
                 + "' AND " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE + "'";
 
 
-        Cursor c1 = c.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO, ContactsContract.Data.SYNC2, ContactsContract.Data.SYNC3}, where, null, null);
-        if (c1.getCount() > 0) {
-            c1.moveToLast();
-            photo.data = c1.getBlob(c1.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO));
-            photo.timestamp = Long.valueOf(c1.getString(c1.getColumnIndex(ContactsContract.Data.SYNC2)));
-            photo.url = c1.getString(c1.getColumnIndex(ContactsContract.Data.SYNC3));
+        try (Cursor c1 = c.query(ContactsContract.Data.CONTENT_URI, new String[]{ContactsContract.CommonDataKinds.Photo.PHOTO, ContactsContract.Data.SYNC2, ContactsContract.Data.SYNC3}, where, null, null)) {
+            if (c1.getCount() > 0) {
+                c1.moveToLast();
+                photo.data = c1.getBlob(c1.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO));
+                photo.timestamp = Long.valueOf(c1.getString(c1.getColumnIndex(ContactsContract.Data.SYNC2)));
+                photo.url = c1.getString(c1.getColumnIndex(ContactsContract.Data.SYNC3));
+            }
         }
-        c1.close();
         return photo;
     }
 
@@ -258,38 +254,37 @@ public class ContactUtil {
         DeviceUtil.log(c, "adding email", email);
         String where = ContactsContract.Data.RAW_CONTACT_ID + " = '" + rawContactId
                 + "' AND " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE + "'";
-        Cursor cursor = c.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, where, null, null);
-        if (cursor.getCount() == 0) {
-            ContentValues contentValues = new ContentValues();
-            //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
-            contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE);
-            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-            contentValues.put(ContactsContract.CommonDataKinds.Email.ADDRESS, email);
-            c.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, contentValues);
+        try (Cursor cursor = c.getContentResolver().query(ContactsContract.Data.CONTENT_URI, new String[]{RawContacts.CONTACT_ID}, where, null, null)) {
+            if (cursor.getCount() == 0) {
+                ContentValues contentValues = new ContentValues();
+                //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
+                contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Email.CONTENT_ITEM_TYPE);
+                contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+                contentValues.put(ContactsContract.CommonDataKinds.Email.ADDRESS, email);
+                c.getContentResolver().insert(ContactsContract.Data.CONTENT_URI, contentValues);
+            }
         }
-        cursor.close();
-
     }
 
     public static void addBirthday(long rawContactId, String birthday) {
         String where = ContactsContract.Data.RAW_CONTACT_ID + " = '" + rawContactId
                 + "' AND " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE
                 + "' AND " + ContactsContract.CommonDataKinds.Event.TYPE + " = '" + ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY + "'";
-        Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, null, where, null, null);
-        int count = cursor.getCount();
-        cursor.close();
-        if (count <= 0) {
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE);
-            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-            contentValues.put(ContactsContract.CommonDataKinds.Event.TYPE, ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY);
-            contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday);
+        try (Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, null, where, null, null)) {
+            int count = cursor.getCount();
+            if (count <= 0) {
+                ContentValues contentValues = new ContentValues();
+                contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Event.CONTENT_ITEM_TYPE);
+                contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+                contentValues.put(ContactsContract.CommonDataKinds.Event.TYPE, ContactsContract.CommonDataKinds.Event.TYPE_BIRTHDAY);
+                contentValues.put(ContactsContract.CommonDataKinds.Event.START_DATE, birthday);
 
-            try {
-                ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
-                //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
-            } catch (Exception e) {
-                Log.e("Error", e.getLocalizedMessage());
+                try {
+                    ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
+                    //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
+                } catch (Exception e) {
+                    Log.e("Error", e.getLocalizedMessage());
+                }
             }
         }
     }
@@ -311,43 +306,42 @@ public class ContactUtil {
                 + "' AND " + ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE + "'";
         String[] projection = {ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY, ContactsContract.CommonDataKinds.StructuredPostal.REGION, ContactsContract.CommonDataKinds.StructuredPostal.CITY};
 
-        Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, projection, where, null, null);
-        boolean insert = false;
-        if (cursor.getCount() == 0) {
-            insert = true;
-        } else {
-            cursor.moveToFirst();
-            String oldCountry = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
-            String oldRegion = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
-            String oldCity = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
-            if ((oldCountry != null && !oldCountry.equals(country)) || (oldRegion != null && !oldRegion.equals(region)) || (oldCity != null && oldCity.equals(city))) {
-                ContactsSyncAdapterService.mContentResolver.delete(ContactsContract.Data.CONTENT_URI, where, null);
+        try (Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, projection, where, null, null)) {
+            boolean insert = false;
+            if (cursor.getCount() == 0) {
                 insert = true;
+            } else {
+                cursor.moveToFirst();
+                String oldCountry = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY));
+                String oldRegion = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.REGION));
+                String oldCity = cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredPostal.CITY));
+                if ((oldCountry != null && !oldCountry.equals(country)) || (oldRegion != null && !oldRegion.equals(region)) || (oldCity != null && oldCity.equals(city))) {
+                    ContactsSyncAdapterService.mContentResolver.delete(ContactsContract.Data.CONTENT_URI, where, null);
+                    insert = true;
+                }
+            }
+            if (insert) {
+                ContentValues contentValues = new ContentValues();
+                //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
+                contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE);
+                contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+                if (country != null && !country.equals("")) {
+                    contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY, country);
+                }
+                if (region != null && !region.equals("")) {
+                    contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.REGION, region);
+                }
+                if (city != null && !city.equals("")) {
+                    contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.CITY, city);
+                }
+                try {
+                    ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
+                    //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
+                } catch (Exception e) {
+                    Log.e("Error", e.getLocalizedMessage());
+                }
             }
         }
-        cursor.close();
-        if (insert) {
-            ContentValues contentValues = new ContentValues();
-            //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
-            contentValues.put(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredPostal.CONTENT_ITEM_TYPE);
-            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-            if (country != null && !country.equals("")) {
-                contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.COUNTRY, country);
-            }
-            if (region != null && !region.equals("")) {
-                contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.REGION, region);
-            }
-            if (city != null && !city.equals("")) {
-                contentValues.put(ContactsContract.CommonDataKinds.StructuredPostal.CITY, city);
-            }
-            try {
-                ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
-                //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
-            } catch (Exception e) {
-                Log.e("Error", e.getLocalizedMessage());
-            }
-        }
-
     }
 
     public static void updateContactLocation(long rawContactId, String location) {
@@ -358,33 +352,33 @@ public class ContactUtil {
                 + "' AND " + ContactsContract.Data.MIMETYPE + " = '" + StructuredPostal.CONTENT_ITEM_TYPE + "'";
         String[] projection = {StructuredPostal.FORMATTED_ADDRESS};
 
-        Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, projection, where, null, null);
-        boolean insert = false;
-        if (cursor.getCount() == 0) {
-            insert = true;
-        } else {
-            cursor.moveToFirst();
-            String oldloc = cursor.getString(cursor.getColumnIndex(StructuredPostal.FORMATTED_ADDRESS));
-            if ((oldloc == null) || (!oldloc.equals(location))) {
-                ContactsSyncAdapterService.mContentResolver.delete(ContactsContract.Data.CONTENT_URI, where, null);
+        try (Cursor cursor = ContactsSyncAdapterService.mContentResolver.query(ContactsContract.Data.CONTENT_URI, projection, where, null, null)) {
+            boolean insert = false;
+            if (cursor.getCount() == 0) {
                 insert = true;
+            } else {
+                cursor.moveToFirst();
+                String oldloc = cursor.getString(cursor.getColumnIndex(StructuredPostal.FORMATTED_ADDRESS));
+                if ((oldloc == null) || (!oldloc.equals(location))) {
+                    ContactsSyncAdapterService.mContentResolver.delete(ContactsContract.Data.CONTENT_URI, where, null);
+                    insert = true;
+                }
             }
-        }
-        cursor.close();
-        if (insert) {
-            ContentValues contentValues = new ContentValues();
-            //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
-            contentValues.put(ContactsContract.Data.MIMETYPE, StructuredPostal.CONTENT_ITEM_TYPE);
-            contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
-            contentValues.put(StructuredPostal.FORMATTED_ADDRESS, location);
-            try {
-                ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
-                //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
-            } catch (Exception e) {
-                Log.e("Error", e.getLocalizedMessage());
-            }
-        }
 
+            if (insert) {
+                ContentValues contentValues = new ContentValues();
+                //op.put(ContactsContract.CommonDataKinds.StructuredPostal.CONTACT_ID, );
+                contentValues.put(ContactsContract.Data.MIMETYPE, StructuredPostal.CONTENT_ITEM_TYPE);
+                contentValues.put(ContactsContract.Data.RAW_CONTACT_ID, rawContactId);
+                contentValues.put(StructuredPostal.FORMATTED_ADDRESS, location);
+                try {
+                    ContactsSyncAdapterService.mContentResolver.insert(ContactsContract.Data.CONTENT_URI, contentValues);
+                    //	mContentResolver.applyBatch(ContactsContract.AUTHORITY,	operationList);
+                } catch (Exception e) {
+                    Log.e("Error", e.getLocalizedMessage());
+                }
+            }
+        }
     }
 
     public static class Contact {

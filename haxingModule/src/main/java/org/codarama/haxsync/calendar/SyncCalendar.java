@@ -126,57 +126,58 @@ public class SyncCalendar {
 
         if (eid != -2) {
             String where = CalendarContract.Events.CALENDAR_ID + " = " + calendarID + " AND " + CalendarContract.Events._SYNC_ID + " = " + eid;
-            Cursor cursor = resolver.query(CalendarContract.Events.CONTENT_URI,
+            try (Cursor cursor = resolver.query(CalendarContract.Events.CONTENT_URI,
                     new String[]{CalendarContract.Events._ID, CalendarContract.Events.TITLE, CalendarContract.Events.DTSTART, CalendarContract.Events.DTEND,
-                            CalendarContract.Events.SELF_ATTENDEE_STATUS, CalendarContract.Events.EVENT_LOCATION, CalendarContract.Events.DESCRIPTION}, where, null, null);
-            int count = cursor.getCount();
-            if (count == 0) {
-                cursor.close();
-                ContentValues values = new ContentValues();
-                values.put(CalendarContract.Events.DTSTART, start);
-                values.put(CalendarContract.Events.DTEND, end);
-                values.put(CalendarContract.Events.TITLE, name);
-                values.put(CalendarContract.Events.HAS_ATTENDEE_DATA, true);
-                values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, rsvp);
-                values.put(CalendarContract.Events._SYNC_ID, eid);
-                if (location != null) {
-                    values.put(CalendarContract.Events.EVENT_LOCATION, location);
-                }
-                if (description != null)
-                    values.put(CalendarContract.Events.DESCRIPTION, description);
-                if (rsvp != CalendarContract.Attendees.ATTENDEE_STATUS_ACCEPTED) {
-                    values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
-                } else {
-                    values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
-                }
-                values.put(CalendarContract.Events.CALENDAR_ID, calendarID);
-                values.put(CalendarContract.Events.EVENT_TIMEZONE, Time.getCurrentTimezone());
-                return Long.valueOf(resolver.insert(insertUri, values).getLastPathSegment());
-            } else {
-                cursor.moveToFirst();
-                long oldstart = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART));
-                long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
-                long oldend = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTEND));
-                String oldlocation = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION));
-                String oldDescription = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.DESCRIPTION));
-                int oldrsvp = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events.SELF_ATTENDEE_STATUS));
-                String oldname = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE));
-                cursor.close();
-                ContentValues values = new ContentValues();
-                if (oldstart != start)
+                            CalendarContract.Events.SELF_ATTENDEE_STATUS, CalendarContract.Events.EVENT_LOCATION, CalendarContract.Events.DESCRIPTION}, where, null, null)) {
+                int count = cursor.getCount();
+                if (count == 0) {
+                    cursor.close();
+                    ContentValues values = new ContentValues();
                     values.put(CalendarContract.Events.DTSTART, start);
-                if (oldend != end)
                     values.put(CalendarContract.Events.DTEND, end);
-                if (oldlocation != null && !oldlocation.equals(location))
-                    values.put(CalendarContract.Events.EVENT_LOCATION, location);
-                if (oldDescription != null && !oldDescription.equals(description))
-                    values.put(CalendarContract.Events.DESCRIPTION, description);
-                if (oldname != null && !oldname.equals(name))
                     values.put(CalendarContract.Events.TITLE, name);
-                if (values.size() != 0)
-                    resolver.update(CalendarContract.Events.CONTENT_URI, values, CalendarContract.Events._ID + " = ?", new String[]{String.valueOf(id)});
-                return id;
+                    values.put(CalendarContract.Events.HAS_ATTENDEE_DATA, true);
+                    values.put(CalendarContract.Events.SELF_ATTENDEE_STATUS, rsvp);
+                    values.put(CalendarContract.Events._SYNC_ID, eid);
+                    if (location != null) {
+                        values.put(CalendarContract.Events.EVENT_LOCATION, location);
+                    }
+                    if (description != null)
+                        values.put(CalendarContract.Events.DESCRIPTION, description);
+                    if (rsvp != CalendarContract.Attendees.ATTENDEE_STATUS_ACCEPTED) {
+                        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
+                    } else {
+                        values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_BUSY);
+                    }
+                    values.put(CalendarContract.Events.CALENDAR_ID, calendarID);
+                    values.put(CalendarContract.Events.EVENT_TIMEZONE, Time.getCurrentTimezone());
+                    return Long.valueOf(resolver.insert(insertUri, values).getLastPathSegment());
+                } else {
+                    cursor.moveToFirst();
+                    long oldstart = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTSTART));
+                    long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
+                    long oldend = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events.DTEND));
+                    String oldlocation = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.EVENT_LOCATION));
+                    String oldDescription = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.DESCRIPTION));
+                    int oldrsvp = cursor.getInt(cursor.getColumnIndex(CalendarContract.Events.SELF_ATTENDEE_STATUS));
+                    String oldname = cursor.getString(cursor.getColumnIndex(CalendarContract.Events.TITLE));
+                    cursor.close();
+                    ContentValues values = new ContentValues();
+                    if (oldstart != start)
+                        values.put(CalendarContract.Events.DTSTART, start);
+                    if (oldend != end)
+                        values.put(CalendarContract.Events.DTEND, end);
+                    if (oldlocation != null && !oldlocation.equals(location))
+                        values.put(CalendarContract.Events.EVENT_LOCATION, location);
+                    if (oldDescription != null && !oldDescription.equals(description))
+                        values.put(CalendarContract.Events.DESCRIPTION, description);
+                    if (oldname != null && !oldname.equals(name))
+                        values.put(CalendarContract.Events.TITLE, name);
+                    if (values.size() != 0)
+                        resolver.update(CalendarContract.Events.CONTENT_URI, values, CalendarContract.Events._ID + " = ?", new String[]{String.valueOf(id)});
+                    return id;
 
+                }
             }
         }
         return -1;
@@ -240,25 +241,26 @@ public class SyncCalendar {
 
         ContentResolver resolver = context.getContentResolver();
         String where = CalendarContract.Events.CALENDAR_ID + " = " + calendarID + " AND " + CalendarContract.Events.TITLE + " = \"" + name + "\"";
-        Cursor cursor = resolver.query(CalendarContract.Events.CONTENT_URI, new String[]{CalendarContract.Events._ID}, where, null, null);
-        int count = cursor.getCount();
-        if (count == 0) {
-            cursor.close();
-            ContentValues values = new ContentValues();
-            values.put(CalendarContract.Events.DTSTART, time);
-            values.put(CalendarContract.Events.TITLE, name);
-            values.put(CalendarContract.Events.ALL_DAY, 1);
-            values.put(CalendarContract.Events.RRULE, "FREQ=YEARLY");
-            values.put(CalendarContract.Events.CALENDAR_ID, calendarID);
-            values.put(CalendarContract.Events.DURATION, "P1D");
-            values.put(CalendarContract.Events.EVENT_TIMEZONE, "utc");
-            values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
-            return Long.valueOf(resolver.insert(CalendarContract.Events.CONTENT_URI, values).getLastPathSegment());
-        } else {
-            cursor.moveToFirst();
-            long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
-            cursor.close();
-            return id;
+        try (Cursor cursor = resolver.query(CalendarContract.Events.CONTENT_URI, new String[]{CalendarContract.Events._ID}, where, null, null)) {
+            int count = cursor.getCount();
+            if (count == 0) {
+                cursor.close();
+                ContentValues values = new ContentValues();
+                values.put(CalendarContract.Events.DTSTART, time);
+                values.put(CalendarContract.Events.TITLE, name);
+                values.put(CalendarContract.Events.ALL_DAY, 1);
+                values.put(CalendarContract.Events.RRULE, "FREQ=YEARLY");
+                values.put(CalendarContract.Events.CALENDAR_ID, calendarID);
+                values.put(CalendarContract.Events.DURATION, "P1D");
+                values.put(CalendarContract.Events.EVENT_TIMEZONE, "utc");
+                values.put(CalendarContract.Events.AVAILABILITY, CalendarContract.Events.AVAILABILITY_FREE);
+                return Long.valueOf(resolver.insert(CalendarContract.Events.CONTENT_URI, values).getLastPathSegment());
+            } else {
+                cursor.moveToFirst();
+                long id = cursor.getLong(cursor.getColumnIndex(CalendarContract.Events._ID));
+                cursor.close();
+                return id;
+            }
         }
     }
 
@@ -326,17 +328,18 @@ public class SyncCalendar {
         ContentResolver resolver = context.getContentResolver();
         String where = CalendarContract.Calendars.ACCOUNT_NAME + " = ? AND " + CalendarContract.Calendars.ACCOUNT_TYPE + " = '" + account.type
                 + "' AND " + CalendarContract.Calendars.CALENDAR_DISPLAY_NAME + " = '" + name + "'";
-        Cursor calendarCursor = resolver.query(CalendarContract.Calendars.CONTENT_URI, projection, where, new String[]{account.name}, null);
-        Log.i(TAG, "Calendars found ('" + name + "'):" + calendarCursor.getCount());
+        try (Cursor calendarCursor = resolver.query(CalendarContract.Calendars.CONTENT_URI, projection, where, new String[]{account.name}, null)) {
+            Log.i(TAG, "Calendars found ('" + name + "'):" + calendarCursor.getCount());
 
-        if (calendarCursor.getCount() <= 0) {
-            calendarCursor.close();
-            return -2;
-        } else {
-            calendarCursor.moveToFirst();
-            long id = calendarCursor.getLong(calendarCursor.getColumnIndex(CalendarContract.Calendars._ID));
-            calendarCursor.close();
-            return id;
+            if (calendarCursor.getCount() <= 0) {
+                calendarCursor.close();
+                return -2;
+            } else {
+                calendarCursor.moveToFirst();
+                long id = calendarCursor.getLong(calendarCursor.getColumnIndex(CalendarContract.Calendars._ID));
+                calendarCursor.close();
+                return id;
+            }
         }
     }
 }

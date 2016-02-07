@@ -226,16 +226,16 @@ public class ContactDetailFragment extends Fragment {
 
 
     private void getContactDetails(long id) {
-        Cursor cursor = getActivity().getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts._ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.CONTACT_ID, RawContacts.SYNC1}, RawContacts._ID + "=" + id, null, null);
-        if (cursor.getColumnCount() >= 1) {
-            cursor.moveToFirst();
-            name = cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
-            uid = cursor.getString(cursor.getColumnIndex(RawContacts.SYNC1));
-            joined = ContactUtil.getMergedContacts(getActivity(), id);
-            contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
+        try (Cursor cursor = getActivity().getContentResolver().query(RawContacts.CONTENT_URI, new String[]{RawContacts._ID, RawContacts.DISPLAY_NAME_PRIMARY, RawContacts.CONTACT_ID, RawContacts.SYNC1}, RawContacts._ID + "=" + id, null, null)) {
+            if (cursor.getColumnCount() >= 1) {
+                cursor.moveToFirst();
+                name = cursor.getString(cursor.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
+                uid = cursor.getString(cursor.getColumnIndex(RawContacts.SYNC1));
+                joined = ContactUtil.getMergedContacts(getActivity(), id);
+                contactID = cursor.getLong(cursor.getColumnIndex(RawContacts.CONTACT_ID));
 
+            }
         }
-        cursor.close();
         imageURI = Uri.withAppendedPath(
                 ContentUris.withAppendedId(RawContacts.CONTENT_URI, id),
                 RawContacts.DisplayPhoto.CONTENT_DIRECTORY);

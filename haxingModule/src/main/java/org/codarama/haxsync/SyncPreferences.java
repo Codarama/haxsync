@@ -18,6 +18,9 @@ package org.codarama.haxsync;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import java.util.HashSet;
+import java.util.Set;
+
 public class SyncPreferences {
 
     private static final String EVENT_COLOR = "event_color";
@@ -31,10 +34,10 @@ public class SyncPreferences {
     private static final String BIRTHDAY_REMINDERS = "birthday_reminders";
     private static final String BIRTHDAY_REMINDER_MINUTES = "birthday_reminder_minutes";
     private static final String EVENT_STATUS = "event_status";
+    private static final String FORCE_SYNC = "force_dl";
 
     private final Context context;
     private final SharedPreferences prefs;
-    private boolean forceSync;
 
     public SyncPreferences(Context context) {
         this.context = context;
@@ -97,7 +100,13 @@ public class SyncPreferences {
     }
 
     public boolean getForceSync() {
-        return prefs.getBoolean("force_dl", false);
+        return prefs.getBoolean(FORCE_SYNC, false);
+    }
+
+    public void setForceSync(boolean forceSync) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putBoolean(FORCE_SYNC, true);
+        editor.commit();
     }
 
     public boolean getRootEnabled() {
@@ -110,5 +119,17 @@ public class SyncPreferences {
 
     public boolean shouldBePrimaryImage() {
         return prefs.getBoolean("image_primary", true);
+    }
+
+    public boolean shouldIgnoreMiddleNames() {
+        return prefs.getBoolean("ignore_middle_names", false);
+    }
+
+    public int fuzzinessLevel() {
+        return Integer.parseInt(prefs.getString("fuzziness", "2"));
+    }
+
+    public Set<String> getAddFriends() {
+        return prefs.getStringSet("add_friends", new HashSet<String>());
     }
 }

@@ -45,15 +45,16 @@ public class NotifierService extends IntentService {
     private long addContactStreamItem(long rawContactId, String uid, FacebookStatus status, Account account) {
 
         //get timestamp of latest saved streamItem
-        Cursor c = mContentResolver.query(Uri.withAppendedPath(ContentUris.withAppendedId(RawContacts.CONTENT_URI, rawContactId),
-                        RawContacts.StreamItems.CONTENT_DIRECTORY),
-                new String[]{StreamItems.TIMESTAMP}, null, null, StreamItems.TIMESTAMP + " DESC");
         long oldTimestamp = -2;
-        if (c.getCount() > 0) {
-            c.moveToFirst();
-            oldTimestamp = c.getLong(c.getColumnIndex("timestamp"));
+        try (Cursor c = mContentResolver.query(Uri.withAppendedPath(ContentUris.withAppendedId(RawContacts.CONTENT_URI, rawContactId),
+                        RawContacts.StreamItems.CONTENT_DIRECTORY),
+                new String[]{StreamItems.TIMESTAMP}, null, null, StreamItems.TIMESTAMP + " DESC")) {
+            if (c.getCount() > 0) {
+                c.moveToFirst();
+                oldTimestamp = c.getLong(c.getColumnIndex("timestamp"));
+            }
         }
-        c.close();
+
         long timestamp = status.getTimestamp();
         //only add item if newer then latest saved one
         if (oldTimestamp >= timestamp) {
@@ -197,21 +198,21 @@ public class NotifierService extends IntentService {
                 if (FacebookUtil.authorize(this, account)) {
 
                     String[] projection = new String[]{RawContacts._ID, RawContacts.SYNC1};
-                    Cursor c = mContentResolver.query(intent.getData(), projection, null, null, null);
-                    c.moveToFirst();
-                    long id = c.getLong(c.getColumnIndex(RawContacts._ID));
-                    String uid = c.getString(c.getColumnIndex(RawContacts.SYNC1));
-                    c.close();
+                    try (Cursor c = mContentResolver.query(intent.getData(), projection, null, null, null)) {
+                        c.moveToFirst();
+                        long id = c.getLong(c.getColumnIndex(RawContacts._ID));
+                        String uid = c.getString(c.getColumnIndex(RawContacts.SYNC1));
 
-                    ArrayList<Status> statuses = FacebookUtil.getStatuses(uid, timelineAll);
+                        ArrayList<Status> statuses = FacebookUtil.getStatuses(uid, timelineAll);
 
-                    if (statuses != null) {
-                        Log.i(TAG, statuses.toString());
-                        for (Status status : statuses) {
-                            FacebookStatus fbstatus = (FacebookStatus) status;
-                            if (timelineAll || fbstatus.getActorID().equals(uid)) {
-                                if (fbstatus != null && !fbstatus.getMessage().equals(""))
-                                    addContactStreamItem(id, uid, fbstatus, account);
+                        if (statuses != null) {
+                            Log.i(TAG, statuses.toString());
+                            for (Status status : statuses) {
+                                FacebookStatus fbstatus = (FacebookStatus) status;
+                                if (timelineAll || fbstatus.getActorID().equals(uid)) {
+                                    if (fbstatus != null && !fbstatus.getMessage().equals(""))
+                                        addContactStreamItem(id, uid, fbstatus, account);
+                                }
                             }
                         }
                     }

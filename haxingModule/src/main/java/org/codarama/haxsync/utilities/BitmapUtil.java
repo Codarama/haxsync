@@ -1,7 +1,6 @@
 package org.codarama.haxsync.utilities;
 
 import android.content.ContentResolver;
-import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Bitmap.CompressFormat;
@@ -18,13 +17,10 @@ public class BitmapUtil {
 
     public static int getMaxSize(ContentResolver resolver) {
         // Note that this URI is safe to call on the UI thread.
-        Cursor c = resolver.query(DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
-                new String[]{DisplayPhoto.DISPLAY_MAX_DIM}, null, null, null);
-        try {
+        try (Cursor c = resolver.query(DisplayPhoto.CONTENT_MAX_DIMENSIONS_URI,
+                new String[]{DisplayPhoto.DISPLAY_MAX_DIM}, null, null, null)) {
             c.moveToFirst();
             return c.getInt(0);
-        } finally {
-            c.close();
         }
     }
 

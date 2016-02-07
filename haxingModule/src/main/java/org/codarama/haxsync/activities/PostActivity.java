@@ -24,23 +24,24 @@ public class PostActivity extends Activity {
         if (Build.VERSION.SDK_INT < 15 || !syncNew) {
             finish();
         } else if (getIntent().getData() != null) {
-            Cursor cursor = managedQuery(getIntent().getData(), null, null, null, null);
-            if (cursor.moveToNext()) {
-                //	Log.i("Cursor", Arrays.deepToString(cursor.getColumnNames()));
+            try (Cursor cursor = managedQuery(getIntent().getData(), null, null, null, null)) {
+                if (cursor.moveToNext()) {
+                    //	Log.i("Cursor", Arrays.deepToString(cursor.getColumnNames()));
 
-                String postID = cursor.getString(cursor.getColumnIndex("stream_item_sync1"));
-                String uid = cursor.getString(cursor.getColumnIndex("stream_item_sync2"));
-                String permalink = cursor.getString(cursor.getColumnIndex("stream_item_sync3"));
+                    String postID = cursor.getString(cursor.getColumnIndex("stream_item_sync1"));
+                    String uid = cursor.getString(cursor.getColumnIndex("stream_item_sync2"));
+                    String permalink = cursor.getString(cursor.getColumnIndex("stream_item_sync3"));
 
-                IntentBuilder builder = IntentUtil.getIntentBuilder(this);
-                Intent intent = builder.getPostIntent(postID, uid, permalink);
-                if (!DeviceUtil.isCallable(this, intent)) {
-                    builder = IntentUtil.getFallbackBuilder();
-                    intent = builder.getPostIntent(postID, uid, permalink);
+                    IntentBuilder builder = IntentUtil.getIntentBuilder(this);
+                    Intent intent = builder.getPostIntent(postID, uid, permalink);
+                    if (!DeviceUtil.isCallable(this, intent)) {
+                        builder = IntentUtil.getFallbackBuilder();
+                        intent = builder.getPostIntent(postID, uid, permalink);
+                    }
+                    this.startActivity(intent);
+
+                    finish();
                 }
-                this.startActivity(intent);
-
-                finish();
             }
         } else {
             // How did we get here without data?

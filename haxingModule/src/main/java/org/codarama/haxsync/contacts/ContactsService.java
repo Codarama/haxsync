@@ -1,8 +1,11 @@
 package org.codarama.haxsync.contacts;
 
+import android.accounts.Account;
 import android.content.ContentResolver;
 import android.content.ContentValues;
 import android.database.Cursor;
+import android.net.Uri;
+import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
 
@@ -45,6 +48,9 @@ public class ContactsService {
     private static final String HTC_DATA_ELEMENT_NAME = "HTCData";
     private static final String FACEBOOK_PATTERN = "<Facebook>id:(.*)/friendof.*</Facebook>";
     private static final String INVALID_VALUE = "<INVALID_VALUE>";
+
+    private static final String USERNAME_COLUMN = ContactsContract.RawContacts.SYNC1;
+    private static final String TIMESTAMP_COLUMN = ContactsContract.RawContacts.SYNC2;
 
     private ContentResolver resolver;
 
@@ -213,6 +219,37 @@ public class ContactsService {
                 }
             }
         }
+    }
+
+    public Map<String, Long> getLocalContacts(Account account) {
+        Uri rawContactUri = ContactsContract.RawContacts.CONTENT_URI.buildUpon()
+                .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_NAME, account.name)
+                .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_TYPE, account.type)
+                .build();
+        HashMap<String, Long> localContacts = new HashMap<>();
+        try (Cursor c1 = resolver.query(rawContactUri, new String[]{BaseColumns._ID, USERNAME_COLUMN, TIMESTAMP_COLUMN}, null, null, null)) {
+            while (c1.moveToNext()) {
+                long entry = c1.getLong(c1.getColumnIndex(BaseColumns._ID));
+                localContacts.put(c1.getString(1), Long.valueOf(entry));
+            }
+        }
+        return localContacts;
+    }
+
+    public Map<String, Long> loadPhoneContacts() {
+
+        HashMap<String, Long> contacts = new HashMap<String, Long>();
+        try (Cursor cursor = resolver.query(
+                ContactsContract.CommonDataKinds.Phone.CONTENT_URI,
+                new String[]{ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME, ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID},
+                null,
+                null,
+                null)) {
+            while (cursor.moveToNext()) {
+                contacts.put(cursor.getString(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.DISPLAY_NAME)), cursor.getLong(cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.RAW_CONTACT_ID)));
+            }
+        }
+        return contacts;
     }
 
     private void processImage(ContentResolver resolver, long rawContactId, byte[] photo, byte[] origPhoto, File cacheDir) {

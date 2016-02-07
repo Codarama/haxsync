@@ -118,6 +118,11 @@ public class ContactDetailsCallback implements GraphRequest.Callback {
                     }
                 }.execute();
             }
+
+            if (force) {
+                // after we have executed a force sync, restore setting back to no force sync
+                prefs.setForceSync(false);
+            }
         } catch (JSONException e) {
             Log.e(TAG, "Failed while parsing facebook contact data", e);
         }

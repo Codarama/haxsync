@@ -118,11 +118,11 @@ public class BirthdayRequestCallback implements GraphRequest.Callback {
                 .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_NAME, account.name)
                 .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_TYPE, account.type)
                 .build();
-        Cursor c1 = resolver.query(rawContactUri, new String[]{ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null);
-        while (c1.moveToNext()) {
-            friends.add(c1.getString(0));
+        try (Cursor c1 = resolver.query(rawContactUri, new String[]{ContactsContract.RawContacts.DISPLAY_NAME_PRIMARY}, null, null, null)) {
+            while (c1.moveToNext()) {
+                friends.add(c1.getString(0));
+            }
         }
-        c1.close();
         return friends;
     }
 

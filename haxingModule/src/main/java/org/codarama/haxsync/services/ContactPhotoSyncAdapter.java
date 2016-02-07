@@ -7,6 +7,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.SyncResult;
 import android.os.Bundle;
+import android.util.Log;
 
 import com.facebook.FacebookSdk;
 
@@ -61,6 +62,7 @@ public class ContactPhotoSyncAdapter extends AbstractThreadedSyncAdapter {
             final String authority,
             final ContentProviderClient provider,
             final SyncResult syncResult) {
+        Log.i(TAG, "Initiating facebook contacts profile photo sync");
 
         SyncPreferences prefs = new SyncPreferences(context);
         boolean wifiOnly = prefs.getWiFiOnly();
@@ -68,10 +70,12 @@ public class ContactPhotoSyncAdapter extends AbstractThreadedSyncAdapter {
 
         // step 1. check prerequisites - WiFi, battery, etc.
         if (wifiOnly && !DeviceUtil.isWifi(context)) {
+            prefs.setMissedCalendarSync(true);
             return;
         }
 
         if (chargingOnly && !DeviceUtil.isCharging(context)) {
+            prefs.setMissedCalendarSync(true);
             return;
         }
 

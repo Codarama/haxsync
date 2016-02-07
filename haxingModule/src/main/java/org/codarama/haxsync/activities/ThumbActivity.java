@@ -19,28 +19,29 @@ public class ThumbActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getIntent().getData() != null) {
-            Cursor cursor = managedQuery(getIntent().getData(), null, null, null, null);
-            if (cursor.moveToNext()) {
-                String type = cursor.getString(cursor.getColumnIndex(StreamItemPhotos.SYNC1));
-                String sync2 = cursor.getString(cursor.getColumnIndex(StreamItemPhotos.SYNC2));
-                if (type.equals("fbphoto")) {
-                    IntentBuilder builder = IntentUtil.getIntentBuilder(this);
-                    Intent intent = builder.getPhotoIntent(sync2);
+            try (Cursor cursor = managedQuery(getIntent().getData(), null, null, null, null)) {
+                if (cursor.moveToNext()) {
+                    String type = cursor.getString(cursor.getColumnIndex(StreamItemPhotos.SYNC1));
+                    String sync2 = cursor.getString(cursor.getColumnIndex(StreamItemPhotos.SYNC2));
+                    if (type.equals("fbphoto")) {
+                        IntentBuilder builder = IntentUtil.getIntentBuilder(this);
+                        Intent intent = builder.getPhotoIntent(sync2);
                 /*	if (!DeviceUtil.isCallable(this, intent)){
-						builder = IntentUtil.getFallbackBuilder();
+                        builder = IntentUtil.getFallbackBuilder();
 						intent = builder.getPhotoIntent(owner, aid, sync2);
 					}*/
-                    this.startActivity(intent);
+                        this.startActivity(intent);
 
-                    finish();
+                        finish();
 
 
-                } else if (type.equals("youtube")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sync2));
-                    this.startActivity(intent);
-                } else if (type.equals("link")) {
-                    Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sync2));
-                    this.startActivity(intent);
+                    } else if (type.equals("youtube")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sync2));
+                        this.startActivity(intent);
+                    } else if (type.equals("link")) {
+                        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sync2));
+                        this.startActivity(intent);
+                    }
                 }
             }
             finish();
