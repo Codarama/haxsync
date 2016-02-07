@@ -2,6 +2,7 @@ package org.codarama.haxsync.provider.facebook;
 
 import android.util.Log;
 
+import org.codarama.haxsync.model.LegacyFriend;
 import org.codarama.haxsync.utilities.FacebookUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -10,7 +11,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-public class FacebookFQLFriend implements Friend {
+@Deprecated
+public class FacebookFQLFriend implements LegacyFriend {
     private JSONObject json;
     private List<String> defaultURLs = Arrays.asList("https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yL/r/HsTZSDw4avx.gif", "https://fbcdn-profile-a.akamaihd.net/static-ak/rsrc.php/v2/yp/r/yDnr5YfbJCH.gif");
 

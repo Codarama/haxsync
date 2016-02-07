@@ -21,7 +21,9 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.BatteryManager;
 import android.os.Build;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import org.codarama.haxsync.R;
 import org.codarama.haxsync.activities.WelcomeActivity;
@@ -49,6 +51,23 @@ public class DeviceUtil {
         }
         return false;
     }
+
+    public static int getScreenWidth(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.widthPixels;
+    }
+
+    public static int getScreenHeight(Context context) {
+        WindowManager windowManager = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics metrics = new DisplayMetrics();
+        windowManager.getDefaultDisplay().getMetrics(metrics);
+
+        return metrics.heightPixels;
+    }
+
 
     public static boolean isWifi(Context c) {
         ConnectivityManager cm = (ConnectivityManager) c.getSystemService(Context.CONNECTIVITY_SERVICE);

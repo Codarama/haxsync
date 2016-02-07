@@ -5,7 +5,6 @@ import android.accounts.AccountManager;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ContentResolver;
-import android.content.ContentValues;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,31 +14,13 @@ import android.os.Bundle;
 import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.provider.ContactsContract.RawContacts;
-import android.util.Log;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import org.codarama.haxsync.R;
-import org.codarama.haxsync.contacts.storage.HtcDataManager;
+import org.codarama.haxsync.contacts.ContactsService;
 import org.codarama.haxsync.utilities.FacebookUtil;
-import org.w3c.dom.Document;
-import org.w3c.dom.Node;
-import org.w3c.dom.NodeList;
-import org.xml.sax.InputSource;
-
-import java.io.StringReader;
-import java.io.StringWriter;
-
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
-import javax.xml.transform.OutputKeys;
-import javax.xml.transform.Transformer;
-import javax.xml.transform.TransformerException;
-import javax.xml.transform.TransformerFactory;
-import javax.xml.transform.dom.DOMSource;
-import javax.xml.transform.stream.StreamResult;
 
 
 public class GoogleBackup extends Activity {
@@ -127,7 +108,7 @@ public class GoogleBackup extends Activity {
                     if (c2.getCount() > 0) {
                         c2.moveToFirst();
                         contactName = c1.getString(c1.getColumnIndex(RawContacts.DISPLAY_NAME_PRIMARY));
-                        HtcDataManager manager = new HtcDataManager(resolver);
+                        ContactsService manager = new ContactsService(resolver);
                         manager.writeHTCData(c2.getLong(c2.getColumnIndex(BaseColumns._ID)), selfID, c1.getString(c1.getColumnIndex(RawContacts.SYNC1)));
                         publishProgress((int) ((c1.getPosition() / (float) c1.getCount()) * 100));
 

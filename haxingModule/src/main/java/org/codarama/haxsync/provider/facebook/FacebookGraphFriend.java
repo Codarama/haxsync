@@ -2,6 +2,7 @@ package org.codarama.haxsync.provider.facebook;
 
 import android.util.Log;
 
+import org.codarama.haxsync.model.LegacyFriend;
 import org.codarama.haxsync.utilities.FacebookUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -11,7 +12,8 @@ import java.util.ArrayList;
 /**
  * Created by mots on 6/23/13.
  */
-public class FacebookGraphFriend implements Friend {
+@Deprecated
+public class FacebookGraphFriend implements LegacyFriend {
 
     private static final String TAG = "FacebookGraphFriend";
     private JSONObject json;

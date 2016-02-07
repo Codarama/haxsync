@@ -9,6 +9,8 @@ import java.net.URL;
 
 public class WebUtil {
 
+    private static final String TAG = "WebUtil";
+
     public static byte[] download(String urlString) {
         ByteArrayOutputStream bais = new ByteArrayOutputStream();
         InputStream is = null;
@@ -23,7 +25,7 @@ public class WebUtil {
                 bais.write(byteChunk, 0, n);
             }
         } catch (Exception e) {
-            Log.e("Error", e.getLocalizedMessage());
+            Log.e(TAG, "Error downloading URL" + urlString, e);
             if (urlString.contains("fbcdn_sphotos_")) {
                 String alt = urlString;
                 urlString = urlString.replace("fbcdn_sphotos_", "fbcdn-sphotos-");
