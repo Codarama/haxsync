@@ -27,7 +27,7 @@ Current state
 | Priority  | Status                  | Feature              | Percentage complete |
 | :-------: | ----------------------- | -------------------- | ------------------- |
 |1          |   :white_check_mark:    | Friends Photo Sync   |                 100%|
-|2          |   :x:                   | Friend List Sync     |                   0%|
+|2          |   :x:                   | Friend List Sync     |                  33%|
 |3          |   :white_check_mark:    | Event Sync           |                 100%|
 |4          |   :x:                   | Event Attendee Sync  |                   0%|
 |5          |   :x:                   | Birthday Sync        |                   0%|
