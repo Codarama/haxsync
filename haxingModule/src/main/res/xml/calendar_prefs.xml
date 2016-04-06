@@ -7,8 +7,7 @@
             android:defaultValue="true"
             android:key="sync_events"
             android:title="@string/sync_events" />
-        <org.droidparts.preference.MultiSelectListPreference
-            android:defaultValue="attending|unsure"
+        <android.preference.MultiSelectListPreference
             android:dependency="sync_events"
             android:entries="@array/EventChoices"
             android:entryValues="@array/EventValues"
