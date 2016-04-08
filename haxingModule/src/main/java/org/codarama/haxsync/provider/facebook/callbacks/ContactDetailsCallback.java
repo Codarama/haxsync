@@ -10,7 +10,7 @@ import com.facebook.GraphResponse;
 
 import org.codarama.haxsync.SyncPreferences;
 import org.codarama.haxsync.contacts.ContactsService;
-import org.codarama.haxsync.model.ProfilePicture;
+import org.codarama.haxsync.entities.ProfilePicture;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;

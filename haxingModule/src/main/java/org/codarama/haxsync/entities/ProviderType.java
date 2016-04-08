@@ -1,4 +1,4 @@
-package org.codarama.haxsync.model;
+package org.codarama.haxsync.entities;
 
 /**
  * Created by tishu on 06/02/2016.

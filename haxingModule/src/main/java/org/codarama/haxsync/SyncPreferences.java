@@ -135,4 +135,8 @@ public class SyncPreferences {
     public Set<String> getAddFriends() {
         return prefs.getStringSet("add_friends", new HashSet<String>());
     }
+
+    public String getBirthdayCalendarAddress() {
+        return "";
+    }
 }

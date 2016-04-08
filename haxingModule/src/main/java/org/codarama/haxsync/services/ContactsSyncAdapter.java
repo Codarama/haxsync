@@ -17,7 +17,7 @@ import android.util.Log;
 import org.apache.commons.lang3.StringUtils;
 import org.codarama.haxsync.SyncPreferences;
 import org.codarama.haxsync.contacts.ContactsService;
-import org.codarama.haxsync.model.Friend;
+import org.codarama.haxsync.entities.Friend;
 import org.codarama.haxsync.utilities.ContactUtil;
 import org.codarama.haxsync.utilities.DeviceUtil;
 

@@ -49,6 +49,7 @@ dependencies {
     compile 'com.facebook.android:facebook-android-sdk:4.10.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.1'
     compile 'me.villani.lorenzo.android:android-cropimage:1.1.0'
+    compile 'net.sf.biweekly:biweekly:0.4.5'
     compile 'com.github.yukuku:ambilwarna:2.0.1'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 

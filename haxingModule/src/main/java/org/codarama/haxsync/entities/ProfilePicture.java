@@ -1,10 +1,4 @@
-package org.codarama.haxsync.model;
-
-import org.codarama.haxsync.provider.facebook.Status;
-
-import java.util.ArrayList;
-import java.util.Map;
-import java.util.Set;
+package org.codarama.haxsync.entities;
 
 /**
  * <p>Facebook buddy</p>

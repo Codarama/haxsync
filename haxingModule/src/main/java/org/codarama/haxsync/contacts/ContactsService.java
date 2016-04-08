@@ -9,7 +9,7 @@ import android.provider.BaseColumns;
 import android.provider.ContactsContract;
 import android.util.Log;
 
-import org.codarama.haxsync.model.ProfilePicture;
+import org.codarama.haxsync.entities.ProfilePicture;
 import org.codarama.haxsync.utilities.BitmapUtil;
 import org.codarama.haxsync.utilities.ContactUtil;
 import org.codarama.haxsync.utilities.DeviceUtil;

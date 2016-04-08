@@ -1,4 +1,4 @@
-package org.codarama.haxsync.model;
+package org.codarama.haxsync.entities;
 
 import org.codarama.haxsync.provider.facebook.Status;
 

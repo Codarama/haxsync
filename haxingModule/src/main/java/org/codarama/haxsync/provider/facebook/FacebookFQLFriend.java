@@ -20,7 +20,7 @@ package org.codarama.haxsync.provider.facebook;
 
 import android.util.Log;
 
-import org.codarama.haxsync.model.LegacyFriend;
+import org.codarama.haxsync.entities.LegacyFriend;
 import org.codarama.haxsync.utilities.FacebookUtil;
 import org.json.JSONException;
 import org.json.JSONObject;
