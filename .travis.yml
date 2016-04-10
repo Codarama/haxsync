@@ -7,7 +7,7 @@ notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
 
 before_install:
-  - pip install codecov
+  - sudo pip install codecov
 
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
