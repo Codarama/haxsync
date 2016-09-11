@@ -7,8 +7,13 @@ notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
 
 before_install:
+  - sudo pip install codecov
+
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
 # Let's try to build...
-script: ./gradlew testDebugUnitTest jacocoTestReport coveralls --info
+script: ./gradlew testDebugUnitTest jacocoTestReport --info
+
+after_success:
+  - codecov
