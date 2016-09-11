@@ -115,8 +115,6 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
                 // of the fuzziness names we add them to the list of contacts with the intention to make them available
                 // for manual merge (I guess)
                 if (localContacts.get(uid) == null) {
-                    //String name = friend.getString("name");
-                    //Log.i(TAG, name + " already on phone: " + Boolean.toString(names.contains(name)));
 
                     addContact(account, friendName, uid);
 

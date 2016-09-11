@@ -51,7 +51,7 @@ import java.util.regex.Pattern;
  * Service to handle view notifications. This allows the sample sync adapter to update the
  * information when the contact is being looked at
  */
-@SuppressLint("NewApi")
+// FIXME StreamItemPhotos and StreamItems are deprecated in recent APIs (20+)
 public class NotifierService extends IntentService {
     private static final String TAG = "NotifierService";
     private static ContentResolver mContentResolver;
@@ -197,7 +197,6 @@ public class NotifierService extends IntentService {
         }
     }
 
-    @SuppressWarnings("unused")
     @Override
     protected void onHandleIntent(Intent intent) {
         if (!FacebookUtil.RESPECT_FACEBOOK_POLICY && DeviceUtil.isOnline(this)) {

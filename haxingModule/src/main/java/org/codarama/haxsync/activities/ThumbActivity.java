@@ -28,7 +28,10 @@ import android.provider.ContactsContract.StreamItemPhotos;
 import org.codarama.haxsync.utilities.intents.IntentBuilder;
 import org.codarama.haxsync.utilities.intents.IntentUtil;
 
-
+/**
+ * This activity uses the Stream API to display thumbnails of the social network photos
+ */
+// TODO StreamItemPhotos and StreamItems are deprecated in recent APIs (20+)
 public class ThumbActivity extends Activity {
     private static final String TAG = "ThumbActivity";
 
@@ -44,15 +47,8 @@ public class ThumbActivity extends Activity {
                     if (type.equals("fbphoto")) {
                         IntentBuilder builder = IntentUtil.getIntentBuilder(this);
                         Intent intent = builder.getPhotoIntent(sync2);
-                /*	if (!DeviceUtil.isCallable(this, intent)){
-                        builder = IntentUtil.getFallbackBuilder();
-						intent = builder.getPhotoIntent(owner, aid, sync2);
-					}*/
                         this.startActivity(intent);
-
                         finish();
-
-
                     } else if (type.equals("youtube")) {
                         Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(sync2));
                         this.startActivity(intent);
@@ -63,9 +59,6 @@ public class ThumbActivity extends Activity {
                 }
             }
             finish();
-
         }
-
     }
-
 }

@@ -4,8 +4,7 @@ buildscript {
         mavenCentral()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:1.+'
-        classpath 'org.kt3k.gradle.plugin:coveralls-gradle-plugin:2.+'
+        classpath 'com.android.tools.build:gradle:2.+'
     }
 }
 

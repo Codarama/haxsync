@@ -1,9 +1,10 @@
 apply plugin: 'com.android.application'
 apply plugin: 'jacoco'
-apply plugin: 'com.github.kt3k.coveralls'
 
 android {
-    compileSdkVersion 19
+    // API level 21 (Lollipop 5.0) deprecates Social Stream API and breakes ThumbActivity and NotifierService
+    // if you find out a workaround also comment in http://stackoverflow.com/questions/31099037/replacement-for-contactscontract-streamitems-in-android-api-21
+    compileSdkVersion 20
     buildToolsVersion "23.0.0"
 
     defaultConfig {
@@ -37,8 +38,6 @@ android {
     }
 }
 
-coveralls.jacocoReportPath = 'build/reports/jacoco/jacocoTestReport/jacocoTestReport.xml'
-
 task jacocoTestReport(type: JacocoReport) {
     group = "Reporting"
     description = "Generate Jacoco coverage reports for Coveralls"
@@ -48,7 +47,8 @@ task jacocoTestReport(type: JacocoReport) {
     }
     classDirectories = fileTree(
             dir: 'build/intermediates/classes/debug',
-            excludes: ['**/R*.class',
+            excludes: ['**/jjnford/*',
+                       '**/R*.class',
                        '**/*$InjectAdapter.class',
                        '**/*$ModuleAdapter.class',
                        '**/*$ViewInjector*.class'
@@ -68,7 +68,8 @@ task jacocoTestReport(type: JacocoReport) {
 
 dependencies {
     compile 'org.apache.commons:commons-lang3:+'
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
+    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
+    // using fixed version to avoid breakages
     compile 'com.github.amlcurran.showcaseview:library:5.+'
     compile 'me.villani.lorenzo.android:android-cropimage:1.+'
     compile 'net.sf.biweekly:biweekly:0.+'
