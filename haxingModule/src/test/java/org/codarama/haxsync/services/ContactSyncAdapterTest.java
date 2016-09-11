@@ -43,7 +43,7 @@ import java.net.URL;
  * See http://robolectric.org/writing-a-test/
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, sdk= 21)
 public class ContactSyncAdapterTest {
 
 //    @Before
