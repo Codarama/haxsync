@@ -65,6 +65,11 @@ public class Preferences extends PreferenceActivity {
         loadHeadersFromResource(R.xml.preferences, target);
     }
 
+    @Override
+    protected boolean isValidFragment(String fragmentName) {
+        return true;
+    }
+
     public static class GeneralFragment extends PreferenceFragment {
         @Override
         public void onCreate(Bundle savedInstanceState) {

@@ -62,28 +62,30 @@ public class ContactDetailsCallback implements GraphRequest.Callback {
     }
 
     private void handleRespose(JSONObject jsonObject) {
-        try {
-            JSONArray array = jsonObject.names();
 
-            // step 1. configure sync options
-            SyncPreferences prefs = new SyncPreferences(context);
-            final boolean force = prefs.getForceSync();
-            final boolean root = prefs.getRootEnabled();
-            final boolean google = prefs.shouldUpdateGooglePhotos();
-            final boolean primary = prefs.shouldBePrimaryImage();
-            final File cacheDir = context.getCacheDir();
+        JSONArray array = jsonObject.names();
 
-            // step 2. read result from JSON response
-            for (int i = 0; i < array.length(); i++) {
+        // step 1. configure sync options
+        SyncPreferences prefs = new SyncPreferences(context);
+        final boolean force = prefs.getForceSync();
+        final boolean root = prefs.getRootEnabled();
+        final boolean google = prefs.shouldUpdateGooglePhotos();
+        final boolean primary = prefs.shouldBePrimaryImage();
+        final File cacheDir = context.getCacheDir();
 
+        // step 2. read result from JSON response
+        for (int i = 0; i < array.length(); i++) {
+            try {
                 final String facebookId = array.getString(i);
                 final JSONObject object = jsonObject.getJSONObject(facebookId);
                 final JSONObject data = object.getJSONObject("data");
 
                 final String url = data.getString("url");
                 final boolean isSilhouette = data.getBoolean("is_silhouette");
-                final int height = data.getInt("height");
-                final int width = data.getInt("width");
+
+                // oddly some pictures lack the height or width attribute
+                final int height = data.has("height") ? data.getInt("height") : 0;
+                final int width = data.has("width") ? data.getInt("width") : 0;
 
                 final ProfilePicture friend = new ProfilePicture() {
                     @Override
@@ -117,14 +119,16 @@ public class ContactDetailsCallback implements GraphRequest.Callback {
                         return "Sucess";
                     }
                 }.execute();
+            } catch (JSONException e) {
+                Log.e(TAG, "Failed while parsing facebook contact data", e);
+                Log.e(TAG, "Parsed data was : " + array);
             }
-
-            if (force) {
-                // after we have executed a force sync, restore setting back to no force sync
-                prefs.setForceSync(false);
-            }
-        } catch (JSONException e) {
-            Log.e(TAG, "Failed while parsing facebook contact data", e);
         }
+
+        if (force) {
+            // after we have executed a force sync, restore setting back to no force sync
+            prefs.setForceSync(false);
+        }
+
     }
 }
