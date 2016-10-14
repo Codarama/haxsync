@@ -24,7 +24,7 @@ import java.util.List;
 
 /**
  * <p>High amount of magic happens here.</p>
- *
+ * <p/>
  * <p>This is a missing class from the original repo that I will try to recreate. Supposedly it should be used to build up Intents<p/>
  */
 public class IntentUtil {
@@ -37,6 +37,10 @@ public class IntentUtil {
         throw new RuntimeException("Not yet developed");
     }
 
+    /**
+     * @param activity the current {@link Activity}
+     * @return a {@link NameList} of applications that can be used to open profiles, status updates and photos
+     */
     public static NameList getApps(Activity activity) {
         throw new RuntimeException("Not yet developed");
     }

@@ -20,17 +20,13 @@ package org.codarama.haxsync.services;
 
 import static org.junit.Assert.assertEquals;
 
-import android.accounts.Account;
-import android.accounts.AccountManager;
 import android.app.Application;
 import android.content.Context;
 import android.content.Intent;
 
 import org.codarama.haxsync.BuildConfig;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricGradleTestRunner;
 import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.Config;
@@ -43,8 +39,8 @@ import java.net.URL;
  * See http://robolectric.org/writing-a-test/
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk= 21)
-public class ContactSyncAdapterTest {
+@Config(constants = BuildConfig.class)
+public class WebCalSyncAdapterTest {
 
 //    @Before
 //    public void init() {
@@ -58,10 +54,10 @@ public class ContactSyncAdapterTest {
         Application application = RuntimeEnvironment.application;
         RoboSharedPreferences preferences = (RoboSharedPreferences) application
                 .getSharedPreferences("example", Context.MODE_PRIVATE);
-        Intent intent = new Intent(application, ContactSyncService.class);
-        ContactSyncAdapter contactSyncAdapter = new ContactSyncAdapter(application.getApplicationContext(), true);
+        Intent intent = new Intent(application, WebCalSyncService.class);
+        WebCalSyncAdapter webCalSyncAdapter = new WebCalSyncAdapter(application.getApplicationContext(), true);
 
-        URL url = contactSyncAdapter.processAddress("webcal://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs");
+        URL url = webCalSyncAdapter.processAddress("webcal://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs");
 
         assertEquals("http://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs", url.toString());
     }
@@ -71,10 +67,10 @@ public class ContactSyncAdapterTest {
         Application application = RuntimeEnvironment.application;
         RoboSharedPreferences preferences = (RoboSharedPreferences) application
                 .getSharedPreferences("example", Context.MODE_PRIVATE);
-        Intent intent = new Intent(application, ContactSyncService.class);
-        ContactSyncAdapter contactSyncAdapter = new ContactSyncAdapter(application.getApplicationContext(), true);
+        Intent intent = new Intent(application, WebCalSyncService.class);
+        WebCalSyncAdapter webCalSyncAdapter = new WebCalSyncAdapter(application.getApplicationContext(), true);
 
-        URL url = contactSyncAdapter.processAddress("http://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs");
+        URL url = webCalSyncAdapter.processAddress("http://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs");
 
         assertEquals("http://www.facebook.com/ical/b.php?uid=123456789&key=fgTTr56dDSs", url.toString());
     }
@@ -84,9 +80,9 @@ public class ContactSyncAdapterTest {
         Application application = RuntimeEnvironment.application;
         RoboSharedPreferences preferences = (RoboSharedPreferences) application
                 .getSharedPreferences("example", Context.MODE_PRIVATE);
-        Intent intent = new Intent(application, ContactSyncService.class);
-        ContactSyncAdapter contactSyncAdapter = new ContactSyncAdapter(application.getApplicationContext(), true);
+        Intent intent = new Intent(application, WebCalSyncService.class);
+        WebCalSyncAdapter webCalSyncAdapter = new WebCalSyncAdapter(application.getApplicationContext(), true);
 
-        URL url = contactSyncAdapter.processAddress("!@#$%^&*(thisisobviouslynotavalidaddress!@#$%^&*");
+        URL url = webCalSyncAdapter.processAddress("!@#$%^&*(thisisobviouslynotavalidaddress!@#$%^&*");
     }
 }

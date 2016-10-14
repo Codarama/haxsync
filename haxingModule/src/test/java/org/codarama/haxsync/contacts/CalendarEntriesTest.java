@@ -32,7 +32,7 @@ import static org.junit.Assert.assertEquals;
  * See http://robolectric.org/writing-a-test/
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, sdk= 21)
+@Config(constants = BuildConfig.class)
 public class CalendarEntriesTest {
 
     @Test

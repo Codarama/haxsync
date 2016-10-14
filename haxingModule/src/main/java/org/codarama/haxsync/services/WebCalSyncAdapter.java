@@ -46,9 +46,9 @@ import biweekly.component.VEvent;
  * This implementation of the {@link AbstractThreadedSyncAdapter} takes care of syncing the
  * contact photographs.
  */
-public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
+public class WebCalSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private static final String TAG = "ContactSyncAdapter";
+    private static final String TAG = WebCalSyncAdapter.class.getName();
 
     private static final String WEBCAL_PROTOCOL_URI_SCHEMA = "webcal://";
     private static final String HTTP_PROTOCOL_URI_SCHEMA = "http://";
@@ -58,7 +58,7 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
     /**
      * Set up the sync adapter
      */
-    public ContactSyncAdapter(Context context, boolean autoInitialize) {
+    public WebCalSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         /*
          * If your app uses a content resolver, get an instance of it
@@ -72,7 +72,7 @@ public class ContactSyncAdapter extends AbstractThreadedSyncAdapter {
      * constructor maintains compatibility with Android 3.0
      * and later platform versions
      */
-    public ContactSyncAdapter(
+    public WebCalSyncAdapter(
             Context context,
             boolean autoInitialize,
             boolean allowParallelSyncs) {

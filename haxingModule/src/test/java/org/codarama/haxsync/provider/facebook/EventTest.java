@@ -34,7 +34,7 @@ import java.io.IOException;
  * Created by tishun on 22.11.15.
  */
 @RunWith(RobolectricGradleTestRunner.class)
-@Config(constants = BuildConfig.class, resourceDir = "./src/test/res", sdk= 21)
+@Config(constants = BuildConfig.class, resourceDir = "./src/test/res")
 public class EventTest {
 
     private JSONObject eventSource = null;

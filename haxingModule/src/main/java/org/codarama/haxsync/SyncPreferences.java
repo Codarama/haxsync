@@ -24,6 +24,24 @@ import android.content.SharedPreferences;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * <p>Contains all the settings that control how HaxSync works.</p>
+ * <p>Currently supported (and their defaults):</p>
+ * <ul>
+ * <li>EVENT_COLOR (0xff2525)</li>
+ * <li>EVENT_REMINDER_MINUTES (30)</li>
+ * <li>EVENT_REMINDERS (false)</li>
+ * <li>WIFI_ONLY (false)</li>
+ * <li>CHARGING_ONLY (false)</li>
+ * <li>MISSED_CALENDAR_SYNC (true)</li>
+ * <li>SYNC_EVENTS (true)</li>
+ * <li>SYNC_BIRTHDAYS (true)</li>
+ * <li>BIRTHDAY_REMINDERS (false)</li>
+ * <li>BIRTHDAY_REMINDER_MINUTES (1440)</li>
+ * <li>EVENT_STATUS (attending|unsure)</li>
+ * <li>FORCE_SYNC (false)</li>
+ * </ul>
+ */
 public class SyncPreferences {
 
     private static final String EVENT_COLOR = "event_color";
@@ -137,6 +155,6 @@ public class SyncPreferences {
     }
 
     public String getBirthdayCalendarAddress() {
-        return "";
+        return "webcal://www.facebook.com/ical/b.php?uid=587066728&key=AQAm5hw4OpDsR_8b";
     }
 }

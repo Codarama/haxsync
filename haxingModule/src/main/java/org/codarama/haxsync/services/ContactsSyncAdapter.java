@@ -27,8 +27,12 @@ import java.util.Map;
 import java.util.Set;
 
 /**
- * This implementation of the {@link AbstractThreadedSyncAdapter} takes care of syncing the
- * contact list.
+ * This implementation of the {@link AbstractThreadedSyncAdapter}:
+ * <ul>
+ * <li>Goes through all the phone contacts and locates those that have HTCData tags in their comments</li>
+ * <li>Parses this information and builds up a list of social network friends</li>
+ * <li></li>
+ * </ul>
  */
 public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
 
@@ -104,7 +108,7 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
             String friendName = friend.getName(ignoreMiddleaNames);
 
             if (friendName == null || uid == null) {
-                Log.w(TAG, "Skipping friend due to lack of name of id");
+                Log.w(TAG, "Skipping friend due to lack of name of id: " + friend);
                 continue;
             }
 
@@ -118,12 +122,12 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
 
                     addContact(account, friendName, uid);
 
-                    Uri rawContactUr = ContactsContract.RawContacts.CONTENT_URI.buildUpon()
+                    Uri rawContactUrl = ContactsContract.RawContacts.CONTENT_URI.buildUpon()
                             .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_NAME, account.name)
                             .appendQueryParameter(ContactsContract.RawContacts.ACCOUNT_TYPE, account.type)
                             .appendQueryParameter(ContactsContract.RawContacts.Data.DATA1, uid)
                             .build();
-                    try (Cursor c = resolver.query(rawContactUr, new String[]{BaseColumns._ID}, null, null, null)) {
+                    try (Cursor c = resolver.query(rawContactUrl, new String[]{BaseColumns._ID}, null, null, null)) {
                         c.moveToLast();
                         Long entry = c.getLong(c.getColumnIndex(BaseColumns._ID));
                         localContacts.put(uid, entry);
@@ -173,7 +177,7 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
 
         try {
             ContentResolver resolver = context.getContentResolver();
-            resolver.applyBatch(ContactsContract.AUTHORITY,                    operationList);
+            resolver.applyBatch(ContactsContract.AUTHORITY, operationList);
         } catch (Exception e) {
             Log.e("Error", e.getLocalizedMessage());
         }
@@ -191,7 +195,9 @@ public class ContactsSyncAdapter extends AbstractThreadedSyncAdapter {
         for (String contact : phoneContacts) {
             int distance = StringUtils.getLevenshteinDistance(contact != null ? contact.toLowerCase() : "", fbContact != null ? fbContact.toLowerCase() : "");
             if (distance <= bestDistance) {
-                //Log.i("FOUND MATCH", "Phone Contact: " + contact +" FB Contact: " + fbContact +" distance: " + distance + "max distance: " +maxdistance);
+                Log.d(TAG, "FOUND MATCH : Phone Contact [" + contact + "] : FB Contact [" +
+                        fbContact + "] : Distance [" + distance + "] : Maximum distance [" +
+                        maxdistance + "]");
                 bestMatch = contact;
                 bestDistance = distance;
             }

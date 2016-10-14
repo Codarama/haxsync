@@ -87,8 +87,8 @@ public class Preferences extends PreferenceActivity {
             listPref.setKey("fb_app");
             listPref.setOrder(0);
             NameList apps = IntentUtil.getApps(getActivity());
-            listPref.setEntries(apps.namesAvail.toArray(new CharSequence[apps.namesAvail.size()]));
-            listPref.setEntryValues(apps.pkgsAvail.toArray(new String[apps.pkgsAvail.size()]));
+            //listPref.setEntries(apps.namesAvail.toArray(new CharSequence[apps.namesAvail.size()]));
+            //listPref.setEntryValues(apps.pkgsAvail.toArray(new String[apps.pkgsAvail.size()]));
             listPref.setTitle(getActivity().getString(R.string.fb_app));
             listPref.setSummary(getActivity().getString(R.string.fb_app_description));
             getPreferenceScreen().addPreference(listPref);
@@ -107,19 +107,6 @@ public class Preferences extends PreferenceActivity {
             }
 
             Preference locSync = findPreference("sync_location");
-
-
-            //            Preference rootEnabled = findPreference("root_enabled");
-            //
-            //
-            //            rootEnabled.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
-            //
-            //    			@Override
-            //    			public boolean onPreferenceChange(Preference preference, Object newValue) {
-            //    				return RootUtil.isRoot();
-            //    			}
-            //
-            //            });
 
             locSync.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
 

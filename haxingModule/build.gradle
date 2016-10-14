@@ -4,12 +4,12 @@ apply plugin: 'jacoco'
 android {
     // API level 21 (Lollipop 5.0) deprecates Social Stream API and breakes ThumbActivity and NotifierService
     // if you find out a workaround also comment in http://stackoverflow.com/questions/31099037/replacement-for-contactscontract-streamitems-in-android-api-21
-    compileSdkVersion 20
+    compileSdkVersion 23
     buildToolsVersion "23.0.0"
 
     defaultConfig {
-        minSdkVersion 19
-        targetSdkVersion 19
+        minSdkVersion 21
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -67,8 +67,8 @@ task jacocoTestReport(type: JacocoReport) {
 }
 
 dependencies {
-    compile 'org.apache.commons:commons-lang3:+'
-    compile 'com.facebook.android:facebook-android-sdk:4.10.1'
+    compile 'org.apache.commons:commons-lang3:3.+'
+    compile 'com.facebook.android:facebook-android-sdk:4.+'
     // using fixed version to avoid breakages
     compile 'com.github.amlcurran.showcaseview:library:5.+'
     compile 'me.villani.lorenzo.android:android-cropimage:1.+'

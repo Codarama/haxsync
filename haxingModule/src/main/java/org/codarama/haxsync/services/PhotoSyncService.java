@@ -23,16 +23,16 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * <p>This implementation of the {@link Service} class is used to bind the {@link ContactPhotoSyncAdapter}
+ * <p>This implementation of the {@link Service} class is used to bind the {@link PhotoSyncAdapter}
  * with the Android Sync framework. Mostly boilerplate code.</p>
  *
  * @see Service
  * @see android.content.AbstractThreadedSyncAdapter
  */
-public class ContactPhotoSyncService extends Service {
+public class PhotoSyncService extends Service {
 
     // Storage for an instance of the sync adapter
-    private static ContactPhotoSyncAdapter syncAdapter = null;
+    private static PhotoSyncAdapter syncAdapter = null;
 
     // Object to use as a thread-safe lock
     private static final Object syncAdapterLock = new Object();
@@ -49,7 +49,7 @@ public class ContactPhotoSyncService extends Service {
          */
         synchronized (syncAdapterLock) {
             if (syncAdapter == null) {
-                syncAdapter = new ContactPhotoSyncAdapter(getApplicationContext(), true);
+                syncAdapter = new PhotoSyncAdapter(getApplicationContext(), true);
             }
         }
     }

@@ -116,7 +116,7 @@ public class ContactDetailsCallback implements GraphRequest.Callback {
                         ContactsService manager = new ContactsService(context.getContentResolver());
                         manager.updateContactPhoto(friend, force, root, google, primary, cacheDir);
 
-                        return "Sucess";
+                        return "Success";
                     }
                 }.execute();
             } catch (JSONException e) {

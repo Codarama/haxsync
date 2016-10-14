@@ -71,15 +71,6 @@
         </activity>
 
         <activity
-            android:name=".activities.ThumbActivity"
-            android:theme="@android:style/Theme.NoDisplay">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <data android:mimeType="vnd.android.cursor.item/stream_item_photo" />
-            </intent-filter>
-        </activity>
-
-        <activity
             android:name=".activities.Preferences"
             android:label="HaxSync Preferences"
             android:theme="@android:style/Theme.Holo">
@@ -170,7 +161,7 @@
         </service>
 
         <service
-            android:name=".services.ContactsSyncAdapterService"
+            android:name=".services.ContactsSyncService"
             android:exported="true"
             android:process=":contacts">
             <intent-filter>
@@ -180,13 +171,10 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_contacts" />
-            <meta-data
-                android:name="android.provider.CONTACTS_STRUCTURE"
-                android:resource="@xml/contacts" />
         </service>
 
         <service
-            android:name=".services.ContactPhotoSyncService"
+            android:name=".services.PhotoSyncService"
             android:exported="true"
             android:process=":contacts">
             <intent-filter>
@@ -196,9 +184,6 @@
             <meta-data
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_contact_photo" />
-            <meta-data
-                android:name="android.provider.CONTACTS_STRUCTURE"
-                android:resource="@xml/contacts" />
         </service>
 
         <service
@@ -213,10 +198,6 @@
                 android:name="android.content.SyncAdapter"
                 android:resource="@xml/sync_calendar" />
         </service>
-
-        <service
-            android:name=".services.NotifierService"
-            android:exported="true"></service>
 
         <receiver
             android:name=".activities.ContinueReceiver"
@@ -265,8 +246,7 @@
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.Translucent.NoTitleBar" />
+            android:label="@string/app_name" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

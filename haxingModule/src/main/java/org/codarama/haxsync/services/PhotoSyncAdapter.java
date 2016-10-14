@@ -42,16 +42,16 @@ import java.util.Set;
  * This implementation of the {@link AbstractThreadedSyncAdapter} takes care of syncing the
  * contact photographs.
  */
-public class ContactPhotoSyncAdapter extends AbstractThreadedSyncAdapter {
+public class PhotoSyncAdapter extends AbstractThreadedSyncAdapter {
 
-    private static final String TAG = "ContactPhotoSyncAdapter";
+    private static final String TAG = "PhotoSyncAdapter";
 
     private Context context;
 
     /**
      * Set up the sync adapter
      */
-    public ContactPhotoSyncAdapter(Context context, boolean autoInitialize) {
+    public PhotoSyncAdapter(Context context, boolean autoInitialize) {
         super(context, autoInitialize);
         /*
          * If your app uses a content resolver, get an instance of it
@@ -65,7 +65,7 @@ public class ContactPhotoSyncAdapter extends AbstractThreadedSyncAdapter {
      * constructor maintains compatibility with Android 3.0
      * and later platform versions
      */
-    public ContactPhotoSyncAdapter(
+    public PhotoSyncAdapter(
             Context context,
             boolean autoInitialize,
             boolean allowParallelSyncs) {

@@ -58,6 +58,8 @@ import java.util.List;
 import java.util.Stack;
 import java.util.TimeZone;
 
+// TODO This class should be removed once we extract all it's logic to other objects
+@Deprecated
 public class FacebookUtil extends Application {
     public static final int PERMISSION_LEVEL = 1;
     public static final boolean RESPECT_FACEBOOK_POLICY = true;

@@ -23,16 +23,16 @@ import android.content.Intent;
 import android.os.IBinder;
 
 /**
- * <p>This implementation of the {@link Service} class is used to bind the {@link ContactSyncAdapter}
+ * <p>This implementation of the {@link Service} class is used to bind the {@link WebCalSyncAdapter}
  * with the Android Sync framework. Mostly boilerplate code.</p>
  *
  * @see Service
  * @see android.content.AbstractThreadedSyncAdapter
  */
-public class ContactSyncService extends Service {
+public class WebCalSyncService extends Service {
 
     // Storage for an instance of the sync adapter
-    private static ContactSyncAdapter syncAdapter = null;
+    private static WebCalSyncAdapter syncAdapter = null;
 
     // Object to use as a thread-safe lock
     private static final Object syncAdapterLock = new Object();
@@ -49,7 +49,7 @@ public class ContactSyncService extends Service {
          */
         synchronized (syncAdapterLock) {
             if (syncAdapter == null) {
-                syncAdapter = new ContactSyncAdapter(getApplicationContext(), true);
+                syncAdapter = new WebCalSyncAdapter(getApplicationContext(), true);
             }
         }
     }
