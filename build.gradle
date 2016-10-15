@@ -2,9 +2,10 @@ buildscript {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
     }
     dependencies {
-        classpath 'com.android.tools.build:gradle:2.+'
+        classpath 'com.android.tools.build:gradle:2.2.1'
     }
 }
 
@@ -12,6 +13,7 @@ allprojects {
     repositories {
         mavenLocal()
         mavenCentral()
+        jcenter()
 
         maven {
             url 'http://lorenzo.villani.me/android-cropimage/'

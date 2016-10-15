@@ -32,7 +32,7 @@ import android.os.IBinder;
 public class WebCalSyncService extends Service {
 
     // Storage for an instance of the sync adapter
-    private static WebCalSyncAdapter syncAdapter = null;
+    private WebCalSyncAdapter syncAdapter = null;
 
     // Object to use as a thread-safe lock
     private static final Object syncAdapterLock = new Object();

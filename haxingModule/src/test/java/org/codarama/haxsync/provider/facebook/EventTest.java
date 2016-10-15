@@ -24,6 +24,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricGradleTestRunner;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 
 import java.io.BufferedReader;
@@ -31,9 +32,9 @@ import java.io.FileReader;
 import java.io.IOException;
 
 /**
- * Created by tishun on 22.11.15.
+ * Tests the {@link Event} class
  */
-@RunWith(RobolectricGradleTestRunner.class)
+@RunWith(RobolectricTestRunner.class)
 @Config(constants = BuildConfig.class, resourceDir = "./src/test/res")
 public class EventTest {
 
@@ -81,7 +82,7 @@ public class EventTest {
 
     @Before
     public void initializeTest() throws IOException, JSONException {
-        this.eventSource = new JSONObject(content.toString());
+        this.eventSource = new JSONObject(content);
     }
 
     @Test

@@ -56,7 +56,7 @@ public class Preferences extends PreferenceActivity {
         boolean settingsFound = prefs.getBoolean("settings_found", false);
         SharedPreferences.Editor editor = prefs.edit();
         editor.putBoolean("settings_found", true);
-        editor.commit();
+        editor.apply();
     }
 
 

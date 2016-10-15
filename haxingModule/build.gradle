@@ -1,20 +1,20 @@
 apply plugin: 'com.android.application'
-apply plugin: 'jacoco'
 
 android {
-    // API level 21 (Lollipop 5.0) deprecates Social Stream API and breakes ThumbActivity and NotifierService
-    // if you find out a workaround also comment in http://stackoverflow.com/questions/31099037/replacement-for-contactscontract-streamitems-in-android-api-21
     compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    buildToolsVersion "23.0.3"
 
     defaultConfig {
         minSdkVersion 21
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+
+        applicationId 'org.codarama.haxsync'   // unique publish ID for the app
+        versionCode 2                          // app version
+        versionName "2.0"                      // user friendly app version
     }
 
     compileOptions {
+        // Android SDK still not compatible with Java 8 *sadface*
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
@@ -28,54 +28,24 @@ android {
 
         debug {
             debuggable true
-        }
-    }
-
-    // temporary disable lint until issues are fixed
-    // it is rally only temporary I promise
-    lintOptions {
-        abortOnError false
-    }
-}
-
-task jacocoTestReport(type: JacocoReport) {
-    group = "Reporting"
-    description = "Generate Jacoco coverage reports for Coveralls"
-    reports {
-        xml.enabled = true
-        html.enabled = false
-    }
-    classDirectories = fileTree(
-            dir: 'build/intermediates/classes/debug',
-            excludes: ['**/jjnford/*',
-                       '**/R*.class',
-                       '**/*$InjectAdapter.class',
-                       '**/*$ModuleAdapter.class',
-                       '**/*$ViewInjector*.class'
-            ])
-    sourceDirectories = files('src/main/java')
-    executionData = files("$buildDir/jacoco/testDebugUnitTest.exec")
-    // Bit hacky but fixes https://code.google.com/p/android/issues/detail?id=69174.
-    // We iterate through the compiled .class tree and rename $$ to $.
-    doFirst {
-        new File("$buildDir/intermediates/classes/").eachFileRecurse { file ->
-            if (file.name.contains('$$')) {
-                file.renameTo(file.path.replace('$$', '$'))
-            }
+            testCoverageEnabled = true
         }
     }
 }
 
+
+// As suggested by code analysis tools we should keep these specific and not use wildcards for the
+// version numbers - otherwise we risk build stability when a new build arrives
+// We should always bump versions manually, and commit only after some degree of verifications
 dependencies {
-    compile 'org.apache.commons:commons-lang3:3.+'
-    compile 'com.facebook.android:facebook-android-sdk:4.+'
-    // using fixed version to avoid breakages
-    compile 'com.github.amlcurran.showcaseview:library:5.+'
-    compile 'me.villani.lorenzo.android:android-cropimage:1.+'
-    compile 'net.sf.biweekly:biweekly:0.+'
-    compile 'com.github.yukuku:ambilwarna:2.+'
+    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'com.facebook.android:facebook-android-sdk:4.16.1'
+    compile 'com.github.amlcurran.showcaseview:library:5.4.3'
+    compile 'me.villani.lorenzo.android:android-cropimage:1.1.2'
+    compile 'net.sf.biweekly:biweekly:0.6.0'
+    compile 'com.github.yukuku:ambilwarna:2.0.1'
 
-    testCompile 'junit:junit:4.+'
-    testCompile 'org.mockito:mockito-core:2.+'
-    testCompile 'org.robolectric:robolectric:3.+'
+    testCompile 'junit:junit:4.12'
+    testCompile 'org.mockito:mockito-core:2.1.0'
+    testCompile 'org.robolectric:robolectric:3.1.2'
 }

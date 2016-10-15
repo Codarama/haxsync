@@ -1,13 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="org.codarama.haxsync"
-    android:installLocation="internalOnly"
-    android:versionCode="47"
-    android:versionName="2.8.a">
-
-    <uses-sdk
-        android:minSdkVersion="14"
-        android:targetSdkVersion="15" />
+    android:installLocation="internalOnly">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -237,7 +231,7 @@
 
         <activity
             android:name=".activities.WizardActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"></activity>
+            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
 
         <activity
             android:name="com.android.camera.CropImage"

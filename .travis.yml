@@ -1,7 +1,7 @@
 language: android
 android:
   components:
-    - build-tools-23.0.0
+    - build-tools-23.0.3
     - android-23
 
 notifications:
@@ -14,7 +14,7 @@ before_install:
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
 # Let's try to build...
-script: ./gradlew testDebugUnitTest jacocoTestReport --info
+script: ./gradlew createDebugCoverageReport --info
 
 after_success:
   - codecov

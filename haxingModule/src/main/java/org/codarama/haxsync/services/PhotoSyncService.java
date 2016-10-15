@@ -32,7 +32,7 @@ import android.os.IBinder;
 public class PhotoSyncService extends Service {
 
     // Storage for an instance of the sync adapter
-    private static PhotoSyncAdapter syncAdapter = null;
+    private PhotoSyncAdapter syncAdapter = null;
 
     // Object to use as a thread-safe lock
     private static final Object syncAdapterLock = new Object();
