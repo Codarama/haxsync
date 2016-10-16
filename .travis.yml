@@ -5,12 +5,10 @@ language: android
 jdk: oraclejdk8
 android:
   components:
+    - platform-tools
+    - tools
     - build-tools-24.0.3
     - android-24
-  licenses:
-    - 'android-sdk-preview-license-.+'
-    - 'android-sdk-license-.+'
-    - 'google-gdk-license-.+'
 
 notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
@@ -18,9 +16,6 @@ notifications:
 before_install:
 # (disable coverage )
 #  - sudo pip install codecov
-
-  - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
-  - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
 # Call gradle build, current CI target builds and executes tests
 script: ./gradlew testDebugUnitTest --info
