@@ -7,10 +7,10 @@ android:
   components:
     - build-tools-24.0.3
     - android-24
-    - tools # to get the new `repository-11.xml`
-    - tools # to install Android SDK tools 25.1.x (x = 6 right now)
   licenses:
+    - 'android-sdk-preview-license-.+'
     - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
 
 notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
