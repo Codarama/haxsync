@@ -5,6 +5,7 @@ buildscript {
         jcenter()
     }
     dependencies {
+        // Use exact module dependencies and no wildcards to avoid build breakages
         classpath 'com.android.tools.build:gradle:2.2.1'
     }
 }

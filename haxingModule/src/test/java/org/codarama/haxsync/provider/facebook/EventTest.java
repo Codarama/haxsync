@@ -35,7 +35,7 @@ import java.io.IOException;
  * Tests the {@link Event} class
  */
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class, resourceDir = "./src/test/res")
+@Config(constants = BuildConfig.class, resourceDir = "./src/test/res", sdk = 23)
 public class EventTest {
 
     private JSONObject eventSource = null;

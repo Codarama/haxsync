@@ -1,12 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.1"
+    compileSdkVersion 24                       // Nougat (v 7.0) , see https://source.android.com/source/build-numbers.html
+    buildToolsVersion "24.0.3"                 // September 2016 , see https://developer.android.com/studio/releases/build-tools.html
 
     defaultConfig {
-        minSdkVersion 21
-        targetSdkVersion 23
+        minSdkVersion 21                       // Lollipop (v 5.0)
+        targetSdkVersion 24                    // Android (v 7.0)
 
         applicationId 'org.codarama.haxsync'   // unique publish ID for the app
         versionCode 2                          // app version
@@ -14,7 +14,8 @@ android {
     }
 
     compileOptions {
-        // Android SDK still not compatible with Java 8 *sadface*
+        // Instant run, JaCoCo and some Lint detectors do not work with Jack
+        // see https://developer.android.com/guide/platform/j8-jack.html
         sourceCompatibility JavaVersion.VERSION_1_7
         targetCompatibility JavaVersion.VERSION_1_7
     }
@@ -33,11 +34,9 @@ android {
     }
 }
 
-
-// As suggested by code analysis tools we should keep these specific and not use wildcards for the
-// version numbers - otherwise we risk build stability when a new build arrives
-// We should always bump versions manually, and commit only after some degree of verifications
 dependencies {
+    // Always use exact versions and no wildcards, to avoid build breakages
+    // Each dependency is to be bumped manually after some sanity testing
     compile 'org.apache.commons:commons-lang3:3.4'
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'

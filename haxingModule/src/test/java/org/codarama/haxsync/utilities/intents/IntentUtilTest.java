@@ -14,7 +14,7 @@ import org.robolectric.annotation.Config;
 import java.util.List;
 
 @RunWith(RobolectricTestRunner.class)
-@Config(constants = BuildConfig.class)
+@Config(constants = BuildConfig.class, sdk = 23)
 public class IntentUtilTest {
 
     @Test

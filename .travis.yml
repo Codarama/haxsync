@@ -1,3 +1,6 @@
+# Reporting unite test coverage to CodeCov is disabled
+# I give up, I just can't set i up, 3 days totally  and irreversibely wasted
+
 language: android
 jdk: oraclejdk8
 android:
@@ -9,13 +12,15 @@ notifications:
   slack: codarama:YVl3XmRANEPWD74rdOErjXGG
 
 before_install:
-  - sudo pip install codecov
+# (disable coverage )
+#  - sudo pip install codecov
 
   - echo yes | android update sdk --filter extra-android-support --no-ui --force > /dev/null
   - echo yes | android update sdk --filter extra-android-m2repository --no-ui --force > /dev/null
 
-# Let's try to build...
-script: ./gradlew createDebugCoverageReport --info
+# Call gradle build, current CI target builds and executes tests
+script: ./gradlew testDebugUnitTest --info
 
-after_success:
-  - codecov
+# (disable coverage )
+# after_success:
+#  - codecov
