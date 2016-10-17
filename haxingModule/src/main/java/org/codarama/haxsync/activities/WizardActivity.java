@@ -81,8 +81,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
     private TextView stepDisplay = null;
     private Spinner contactSpinner = null;
 
-    // TODO Evaluate if removing the workaround code would have any adverse effects on the code
-    //    private Button workaroundButton = null;
     private Switch eventSwitch;
     private Switch birthdaySwitch;
     private Switch reminderSwitch;
@@ -100,12 +98,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
             steps.add(R.layout.wiz_fb_login);
             next.setEnabled(false);
         }
-
-        // Step 1a. Workaround screen (DISABLED)
-// TODO Evaluate if removing the workaround code would have any adverse effects on the code
-//        if (DeviceUtil.needsWorkaround(this)) {
-//            steps.add(R.layout.wiz_workaround);
-//        }
 
         // Step 2. Existing settings
         if (shouldSkipSettings()) {
@@ -167,9 +159,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         }
 
         final LoginButton loginButton = (LoginButton) findViewById(R.id.login_button);
-
-// TODO Evaluate if removing the workaround code would have any adverse effects on the code
-//        workaroundButton = (Button) findViewById(R.id.workaroundButton);
 
         wizardCheck = (CheckBox) findViewById(R.id.checkHide);
 
@@ -242,18 +231,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
             });
         }
 
-// TODO Evaluate if removing the workaround code would have any adverse effects on the code
-//        if (workaroundButton != null) {
-//            workaroundButton.setOnClickListener(new View.OnClickListener() {
-//                @Override
-//                public void onClick(View v) {
-//                    Intent intent = new Intent(Intent.ACTION_VIEW);
-//                    intent.setData(Uri.parse("market://details?id=com.haxsync.facebook.workaround"));
-//                    startActivity(intent);
-//                }
-//            });
-//        }
-
         eventSwitch = ((Switch) findViewById(R.id.switchEvent));
         birthdaySwitch = ((Switch) findViewById(R.id.switchBirthdays));
 
@@ -264,8 +241,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         }
 
         reminderSwitch = ((Switch) findViewById(R.id.switchReminders));
-
-
         contactSpinner = (Spinner) findViewById(R.id.contactSpinner);
 
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this, R.array.ContactsChoices, android.R.layout.simple_spinner_item);
@@ -313,8 +288,6 @@ public class WizardActivity extends AccountAuthenticatorActivity {
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("settings_found", true);
                     editor.commit();
-                    //flipper.removeView(showcaseView);
-                    //flipper.removeViewAt(flipper.getDisplayedChild());
                 }
                 if (isLast()) {
                     DeviceUtil.toggleWizard(WizardActivity.this, !wizardCheck.isChecked());
@@ -322,15 +295,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
                     WizardActivity.this.finish();
                 } else {
                     flipper.showNext();
-                    //showcase doesn't count as step, so remove it from flipper so the step counter doesn't get messed up.
-                    /*if (isShowCase){
-                        flipper.removeViewAt(flipper.getDisplayedChild() - 1);
-                        isShowCase = false;
-                    }*/
-
                     updateNextView();
-
-
                 }
             }
         });
@@ -370,12 +335,13 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         }
         SharedPreferences prefs = getSharedPreferences(getPackageName() + "_preferences", MODE_MULTI_PROCESS);
 
-        if (!contactSync)
+        if (!contactSync) {
             contactSpinner.setSelection(0);
-        else if (prefs.getBoolean("phone_only", true))
+        } else if (prefs.getBoolean("phone_only", true)) {
             contactSpinner.setSelection(1);
-        else
+        } else {
             contactSpinner.setSelection(2);
+        }
 
         eventSwitch.setChecked(prefs.getBoolean("sync_events", true) && calendarSync);
         birthdaySwitch.setChecked(prefs.getBoolean("sync_birthdays", true) && calendarSync);
@@ -420,10 +386,5 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         if (stepDisplay != null) {
             stepDisplay.setText(getResources().getString(R.string.step, flipper.getDisplayedChild() + 1, flipper.getChildCount()));
         }
-//        if (isLast()) {
-//            ((TextView) findViewById(R.id.nextLabel)).setText(getResources().getString(R.string.done));
-//        }
     }
-
-
 }
