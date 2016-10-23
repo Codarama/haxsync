@@ -112,8 +112,6 @@
     <string name="no_contacts">Brak kontaktów HaxSync!</string>
     <string name="join_with">Połącz z</string>
     <string name="seperate">Rozłącz</string>
-    <string name="workaround_warning">Bądź ostrożny! Jeśli nie zastosujesz obejścia, Twoje dane z HaxSync przepadną po restarcie. Kontynuuj wyłącznie, jeśli podjąłeś stosowne środki ostrożności i wiesz co robisz.</string>
-    <string name="workaround_description">Z powodu błędu w Android/Google Play, kontakty HaxSync zostały usunięte po restarcie. By zapobiec takim problemom, możesz zainstalować moją darmową aplikację -  HaxSync Jelly Bean Workaround.</string>
     <string name="contact_manager">Zarządzaj kontaktami</string>
     <string name="contact_manager_description">Ręcznie synchronizuj kontakty, Edytuj kontakty i przycinaj zdjęcia!</string>
     <string name="synchronizing">Synchronizacja…</string>
@@ -134,9 +132,6 @@
     <string name="wiz_settings_text">Teraz wystarczy zdecydować co pobrać.</string>
     <string name="contacts_to_sync">Kontakty do synchronizacji</string>
     <string name="wiz_settings_reminder">Twórz przypomnienia dla urodzin i wydarzeń</string>
-    <string name="wiz_workaround_header">Obejście</string>
-    <string name="wiz_workaround_text1">Twoja wersja Android\'a posiada błąd negatywnie wpływający na działanie HaxSync.</string>
-    <string name="wiz_workaround_text2">Proszę zainstaluj darmowe obejście, by zapobiec temu.</string>
     <string name="install_from_google_play">Pobierz z Google Play</string>
     <string name="wiz_success_text1">Dzięki za konfigurację HaxSync.\nTwoje dane są właśnie synchronziowane.</string>
     <string name="wiz_success_text2">Jeśli w dowolnym momencie, zechcesz zmienić ustawienia lub chcesz więcej kontroli nad działaniem HaxSync, przejdź do "Konta" w "Ustawieniach" i wybierz Twoje konto HaxSync.</string>

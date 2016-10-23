@@ -67,8 +67,6 @@
     <string name="remind_me">Erinnere mich</string>
     <string name="remind_before">vor dem Ereignis.</string>
     <string name="reminder_time">Erinnerungszeit</string>
-    <string name="jb_warning_ticker">Jelly Bean Workaround benötigt!</string>
-    <string name="jb_warning_title">Jelly Bean Workaround</string>
     <string name="jb_warning_description">Sorgt fürs Überleben der Daten nach Reboot</string>
     <string name="title_contact_detail">Kontaktdetail</string>
     <string name="title_contact_list">Kontakte</string>
@@ -84,8 +82,6 @@
     <string name="no_contacts">Keine HaxSync-Kontakte gefunden!</string>
     <string name="join_with">Zusammenführen mit</string>
     <string name="seperate">Trennen</string>
-    <string name="workaround_warning">HaxSync verliert ohne Workaround den Account nach einem Reboot. Bitte nur fortfahren, wenn Sie sich absolut sicher sind, zu wissen, was Sie tuen.</string>
-    <string name="workaround_description">Auf Grund eines Bugs in Android/Google Play wird der HaxSync-Account nach einem Reboot gelöscht. Um dies zu verhindern, kann meine gratis Workaround-App installiert werden.</string>
     <string name="contact_manager">Kontaktmanager</string>
     <string name="contact_manager_description">Ermöglicht manuelles Synchronisieren von Kontakten, Zusammenführen mit Google-Kontakten und Zuschneiden von Kontaktbildern!</string>
     <string name="synchronizing">Synchronisiere…</string>
@@ -102,9 +98,6 @@
     <string name="wiz_settings_text">Jetzt kannst du entscheiden, welche Daten auf dein Gerät geladen werden sollen.</string>
     <string name="contacts_to_sync">Kontakte</string>
     <string name="wiz_settings_reminder">Erinnerungen für Events</string>
-    <string name="wiz_workaround_header">Workaround</string>
-    <string name="wiz_workaround_text1">Deine Android-Version hat einen Bug, der HaxSync bei seiner Arbeit stört.</string>
-    <string name="wiz_workaround_text2">Bitte installiere den kostenlosen Workaround, um dies zu verhindern.</string>
     <string name="install_from_google_play">Von Google Play installieren</string>
     <string name="wiz_success_text1">HaxSync wurde fertig konfiguriert.\nDeine Daten werden jetzt synchronisiert.</string>
     <string name="wiz_success_text2">Solltest du Einstellungen ändern oder mehr Kontrolle über HaxSync\'s Verhalten wollen, wähle dein HaxSync-Konto in den Android-Systemeinstellungen aus.</string>

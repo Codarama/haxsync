@@ -83,9 +83,6 @@ public class FacebookUtil extends Application {
             return true; // false
         }
 
-        // TODO Evaluate if removing the workaround code would have any adverse effects on the code
-//        DeviceUtil.showJellyBeanNotification(context);
-
         AccessToken accessToken = AccessToken.getCurrentAccessToken();
         if (accessToken == null || accessToken.isExpired()) {
             notifyToken(context);

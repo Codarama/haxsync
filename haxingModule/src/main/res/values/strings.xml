@@ -96,8 +96,6 @@
     <string name="remind_me">Remind me</string>
     <string name="remind_before">before the event.</string>
     <string name="reminder_time">Reminder Time</string>
-    <string name="jb_warning_ticker">Jelly Bean workaround required!</string>
-    <string name="jb_warning_title">Jelly Bean workaround</string>
     <string name="jb_warning_description">Install to prevent losing data on reboot.</string>
     <string name="title_contact_detail">Contact Detail</string>
     <string name="title_contact_list">Contacts</string>
@@ -113,8 +111,6 @@
     <string name="no_contacts">No HaxSync Contacts found!</string>
     <string name="join_with">Join With</string>
     <string name="seperate">Separate</string>
-    <string name="workaround_warning">Be careful, if you don\'t install the workaround, your HaxSync data will be gone after a reboot. Only continue if you have taken precautions of your own and know what you\'re doing.</string>
-    <string name="workaround_description">Due to a bug in Android/Google Play, the HaxSync-Account gets deleted after a reboot. To prevent this from happening, please install my free Workaround-App.</string>
     <string name="contact_manager">Manage Contacts</string>
     <string name="contact_manager_description">Manually sync contacts, edit contact links and crop images!</string>
     <string name="synchronizing">Synchronizing…</string>
@@ -135,9 +131,6 @@
     <string name="wiz_settings_text">Now we just need to decide what to sync.</string>
     <string name="contacts_to_sync">Contacts to sync</string>
     <string name="wiz_settings_reminder">Create reminders</string>
-    <string name="wiz_workaround_header">Workaround</string>
-    <string name="wiz_workaround_text1">Your Android version has a bug which negatively affects HaxSync.</string>
-    <string name="wiz_workaround_text2">Please install the free workaround to prevent this from happening.</string>
     <string name="install_from_google_play">Install from Google Play</string>
     <string name="wiz_success_text1">Thanks for setting up HaxSync.\nYour content is syncing now.</string>
     <string name="wiz_success_text2">If at any time you want to edit your settings or want more control over HaxSync\'s behavior, go to "Accounts" in "Settings" and select your HaxSync account.</string>

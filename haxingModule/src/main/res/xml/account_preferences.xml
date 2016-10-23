@@ -41,16 +41,4 @@
             android:targetClass="org.codarama.haxsync.activities.AboutPopup"
             android:targetPackage="org.codarama.haxsync" />
     </PreferenceScreen>
-    <!--      <PreferenceScreen android:title="@string/visit_fb" -->
-    <!--         android:summary="@string/visit_fb_description" -->
-    <!--         android:key="samsung_hax"> -->
-    <!--         <intent android:action="android.intent.action.VIEW" -->
-    <!--                 android:data="http://www.facebook.com/HaxSync" /> -->
-    <!--  </PreferenceScreen> -->
-    <!--       <PreferenceScreen android:title="@string/report_issue"  -->
-    <!--           android:summary="@string/report_issue_description" -->
-    <!--         android:key="samsung_hax"> -->
-    <!--         <intent android:action="android.intent.action.VIEW" -->
-    <!--                 android:data="http://haxsync.com/projects/haxsync/wiki/How_to_report_an_issue" /> -->
-    <!--  </PreferenceScreen> -->
 </PreferenceScreen>
