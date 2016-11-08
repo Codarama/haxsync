@@ -24,21 +24,23 @@ import android.text.Html;
 import android.text.method.LinkMovementMethod;
 import android.widget.TextView;
 
+import org.codarama.haxsync.BuildConfig;
 import org.codarama.haxsync.R;
 
+/**
+ * Display version information, open source libraries used and related matherial
+ */
 public class AboutPopup extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.about_popup);
+
+        TextView header = (TextView) findViewById(R.id.textView1);
+        header.append(BuildConfig.VERSION_NAME);
+
         TextView thanksView = (TextView) findViewById(R.id.thanksView);
         thanksView.setClickable(true);
         thanksView.setMovementMethod(LinkMovementMethod.getInstance());
         thanksView.setText(Html.fromHtml(getString(R.string.thanks)));
-
-		/*AlertDialog.Builder dialog = new AlertDialog.Builder(this);
-        dialog.setMessage("Copyright (c) 2011 Mathias Roth. \n" +
-				"Uses Code by Sam Steele (www.c99.org) licensed under the Apache Public license.");
-		dialog.show();*/
     }
-
 }

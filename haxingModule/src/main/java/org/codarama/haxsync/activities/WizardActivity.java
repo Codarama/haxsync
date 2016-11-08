@@ -303,7 +303,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
         settingsView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(WizardActivity.this, Preferences.class);
+                Intent i = new Intent(WizardActivity.this, PreferencesActivity.class);
                 startActivity(i);
             }
         });

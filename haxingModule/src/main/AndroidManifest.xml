@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="org.codarama.haxsync"
-    android:installLocation="internalOnly">
+    package="org.codarama.haxsync" android:installLocation="auto">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -23,13 +22,14 @@
 
     <application
         android:icon="@drawable/icon"
-        android:label="@string/app_name">
+        android:label="@string/app_name"
+        android:theme="@style/Theme.AppCompat.NoActionBar"
+        android:allowBackup="true">
         
         <activity
             android:name=".activities.LoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
-            android:label="@string/app_name"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:label="@string/app_name">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -37,8 +37,7 @@
         </activity>
 
         <activity
-            android:name=".activities.ProfileActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:name=".activities.ProfileActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -47,8 +46,7 @@
         </activity>
 
         <activity
-            android:name=".activities.PostActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:name=".activities.PostActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
@@ -56,25 +54,23 @@
         </activity>
 
         <activity
-            android:name=".activities.Preferences"
+            android:name=".activities.PreferencesActivity"
             android:label="HaxSync Preferences"
-            android:theme="@android:style/Theme.Holo">
+            android:theme="@style/Theme.AppCompat">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activities.AuthorizationActivity"
-            android:theme="@android:style/Theme.NoDisplay">
+            android:name=".activities.AuthorizationActivity">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activities.Help"
-            android:theme="@android:style/Theme.Holo.NoActionBar">
+            android:name=".activities.Help">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -82,8 +78,7 @@
 
         <activity
             android:name=".activities.AboutPopup"
-            android:label="About"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:label="About">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -91,8 +86,7 @@
 
         <activity
             android:name=".activities.SyncPopup"
-            android:label="@string/sync_freq"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:label="@string/sync_freq">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -100,24 +94,21 @@
 
         <activity
             android:name=".activities.FriendPicker"
-            android:label="Friend Picker"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:label="Friend Picker">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activities.BirthdayReminder"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:name=".activities.BirthdayReminder">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
         <activity
-            android:name=".activities.EventReminder"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:name=".activities.EventReminder">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -125,8 +116,7 @@
 
         <activity
             android:name=".activities.GoogleBackup"
-            android:label="Writing HTCData"
-            android:theme="@android:style/Theme.Holo.Dialog">
+            android:label="Writing HTCData">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -195,8 +185,7 @@
 
         <activity
             android:name=".activities.ContactListActivity"
-            android:label="@string/title_contact_list"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            android:label="@string/title_contact_list">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
@@ -204,16 +193,14 @@
 
         <activity
             android:name=".activities.ContactDetailActivity"
-            android:label="@string/title_contact_detail"
-            android:theme="@android:style/Theme.Holo.Light.DarkActionBar">
+            android:label="@string/title_contact_detail">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".ContactListActivity" />
         </activity>
 
         <activity
-            android:name=".activities.WelcomeActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar">
+            android:name=".activities.WelcomeActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -221,8 +208,7 @@
         </activity>
 
         <activity
-            android:name=".activities.WizardActivity"
-            android:theme="@android:style/Theme.Holo.Light.NoActionBar"/>
+            android:name=".activities.WizardActivity"/>
 
         <activity
             android:name="com.android.camera.CropImage"

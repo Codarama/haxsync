@@ -52,7 +52,7 @@
     <string name="timeline_all_summary">Shows the contact\'s full timeline, also containing posts from other users.</string>
     <string name="thanks">
 <![CDATA[
-         <b>Daniel Pfeller</b><br /> <i>Development</i><br />
+        <b>Daniel Pfeller</b><br /> <i>Development</i><br />
         <b><a href="http://www.c99.org/">Sam Steele</a></b><br /><i>Sync Adapter sample code, licensed under the Apache Public License</i><br />
  	    <b><a href="http://www.apache.org/">Apache Software Foundation</a></b><br /><i>commons.lang, licensed under the Apache Public License</i><br />
  	    <b><a href="https://twitter.com/snalty/">Sam Nalty</a></b><br /><i>Wizard Design</i><br />
@@ -152,4 +152,8 @@
     <string name="add_me_to_friends">Sync "Me" contact with my contact entry</string>
     <string name="add_me_to_friends_summary">If you have yourself saved as contact</string>
     <string name="facebook_app_id">892912204090255</string>
+    <string name="menu_home">Home</string>
+    <string name="menu_settings">Settings</string>
+    <string name="menu_manual_sync">Sync now</string>
+    <string name="codarama_haxsync">Codarama HaxSync</string>
 </resources>

@@ -95,9 +95,6 @@
     <string name="remind_me">Przypomnij mi</string>
     <string name="remind_before">przed wydarzeniem.</string>
     <string name="reminder_time">Przypomnienie</string>
-    <string name="jb_warning_ticker">Wymagane obejście Jelly Bean!</string>
-    <string name="jb_warning_title">Obejście Jelly Bean</string>
-    <string name="jb_warning_description">Zastosuj by zabezpieczyć się przed utratą danych w czasie restartu.</string>
     <string name="title_contact_detail">Szczegóły kontaktu</string>
     <string name="title_contact_list">Kontakty</string>
     <string name="linked_with_google">Połączono z Kontaktem Google %1$s</string>

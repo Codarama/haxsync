@@ -18,12 +18,13 @@
 
 package org.codarama.haxsync.activities;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.ImageView;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import com.facebook.appevents.AppEventsLogger;
 
@@ -31,9 +32,10 @@ import org.codarama.haxsync.R;
 
 /**
  * <p>Welcome screen</p>
- * <p>Displayed when the application is started for the first time. Leads to the {@link WizardActivity}.</p>
  */
-public class WelcomeActivity extends Activity {
+public class WelcomeActivity extends AppCompatActivity {
+
+    private static final String TAG = "WelcomeActivity";
 
     @Override
     protected void onResume() {
@@ -57,16 +59,56 @@ public class WelcomeActivity extends Activity {
 
         setContentView(R.layout.activity_welcome);
 
-        ImageView image = (ImageView) findViewById(R.id.logo);
-        image.setOnClickListener(new OnClickListener() {
+        // Keeping this code for now, until we move away from using the ugly wizard
 
-            @Override
-            public void onClick(View v) {
-                Intent nextIntent = new Intent(WelcomeActivity.this, WizardActivity.class);
+//        ImageView image = (ImageView) findViewById(R.id.logo);
+//        image.setOnClickListener(new OnClickListener() {
+//
+//            @Override
+//            public void onClick(View v) {
+//                Intent nextIntent = new Intent(WelcomeActivity.this, WizardActivity.class);
+//                WelcomeActivity.this.startActivity(nextIntent);
+//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//                WelcomeActivity.this.finish();
+//            }
+//        });
+
+        Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
+        setSupportActionBar(myToolbar);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.navigation_items, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.nav_home: {
+                Log.i(TAG, "Navigating home");
+            }
+
+            case R.id.nav_settings: {
+                Log.i(TAG, "Navigating to settings");
+                Intent nextIntent = new Intent(WelcomeActivity.this, PreferencesActivity.class);
                 WelcomeActivity.this.startActivity(nextIntent);
                 overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
                 WelcomeActivity.this.finish();
+                return true;
             }
-        });
+
+            case R.id.nav_manual_sync: {
+                Log.i(TAG, "Executing manual sync");
+                return true;
+            }
+
+            default: {
+                // If we got here, the user's action was not recognized.
+                // Invoke the superclass to handle it.
+                return super.onOptionsItemSelected(item);
+            }
+        }
     }
 }

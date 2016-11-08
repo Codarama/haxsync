@@ -6,7 +6,7 @@ android {
 
     defaultConfig {
         minSdkVersion 21                       // Lollipop (v 5.0)
-        targetSdkVersion 24                    // Android (v 7.0)
+        targetSdkVersion 24                    // Nougat (v 7.0)
 
         applicationId 'org.codarama.haxsync'   // unique publish ID for the app
         versionCode 2                          // app version

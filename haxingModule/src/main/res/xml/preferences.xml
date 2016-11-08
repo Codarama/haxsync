@@ -2,19 +2,19 @@
 <preference-headers xmlns:android="http://schemas.android.com/apk/res/android">
 
     <header
-        android:fragment="org.codarama.haxsync.activities.Preferences$GeneralFragment"
+        android:fragment="org.codarama.haxsync.activities.PreferencesActivity$GeneralFragment"
         android:icon="@drawable/ic_menu_preferences"
         android:summary="@string/general_summary"
         android:title="@string/general_settings" />
 
     <header
-        android:fragment="org.codarama.haxsync.activities.Preferences$ContactFragment"
+        android:fragment="org.codarama.haxsync.activities.PreferencesActivity$ContactFragment"
         android:icon="@drawable/ic_menu_allfriends"
         android:summary="@string/contact_summary"
         android:title="@string/contact_settings" />
 
     <header
-        android:fragment="org.codarama.haxsync.activities.Preferences$CalendarFragment"
+        android:fragment="org.codarama.haxsync.activities.PreferencesActivity$CalendarFragment"
         android:icon="@drawable/ic_menu_my_calendar"
         android:summary="@string/calendar_summary"
         android:title="@string/calendar_settings" />

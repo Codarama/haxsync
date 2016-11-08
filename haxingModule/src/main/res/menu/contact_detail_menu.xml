@@ -1,12 +1,13 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/force_image_dl"
         android:icon="@drawable/refresh"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/force_image_redl"></item>
+        android:title="@string/force_image_redl"
+        app:showAsAction="ifRoom|withText" />
     <item
         android:id="@+id/crop_image"
         android:icon="@drawable/crop"
-        android:showAsAction="ifRoom|withText"
-        android:title="@string/manually_crop"></item>
+        android:title="@string/manually_crop"
+        app:showAsAction="ifRoom|withText" />
 </menu>
