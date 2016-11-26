@@ -20,11 +20,6 @@ package org.codarama.haxsync.utilities;
 
 import android.accounts.Account;
 import android.accounts.AccountManager;
-import android.annotation.SuppressLint;
-import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -32,13 +27,9 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
-import android.graphics.BitmapFactory;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
-import android.net.Uri;
 import android.os.BatteryManager;
-import android.os.Build;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.WindowManager;
@@ -105,7 +96,7 @@ public class DeviceUtil {
 
     public static boolean hasAccount(Context context) {
         AccountManager am = AccountManager.get(context);
-        return (am.getAccountsByType("org.codarama.haxsync.account").length > 0);
+        return (am.getAccountsByType(context.getString(R.string.ACCOUNT_TYPE)).length > 0);
     }
 
     public static Account getAccount(Context c) {

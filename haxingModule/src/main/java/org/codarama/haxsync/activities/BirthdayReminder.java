@@ -66,7 +66,7 @@ public class BirthdayReminder extends Activity {
                 editor.putLong("birthday_reminder_minutes", getMinutes());
                 editor.commit();
                 AccountManager am = AccountManager.get(BirthdayReminder.this);
-                Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                 new BirthdayReminder.ReminderUpdater(BirthdayReminder.this, account, getMinutes()).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, BirthdayReminder.this.getString(R.string.event_cal));
 
                 //Log.i("SECONDS", Long.toString(getSeconds()));

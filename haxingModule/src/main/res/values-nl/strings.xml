@@ -29,7 +29,6 @@
     <string name="wifi_only_summary">Synchroniseer alleen indien verbonden met WiFi-netwerk.</string>
     <string name="wifi_only">Alleen over WiFi</string>
     <string name="charging_only">Alleen tijdens opladen</string>
-    <string name="charging_only_summary"></string>
     <string name="getting_friends">Facebook-vrienden ophalen…</string>
     <string name="sync_every">Synchroniseer elke</string>
     <string name="days">Dagen</string>

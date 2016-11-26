@@ -37,6 +37,7 @@ import android.preference.PreferenceFragment;
 import android.provider.BaseColumns;
 import android.provider.CalendarContract;
 import android.provider.ContactsContract.RawContacts;
+import android.support.v7.widget.Toolbar;
 
 import org.codarama.haxsync.R;
 import org.codarama.haxsync.services.CalendarSyncAdapterService;
@@ -117,7 +118,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (!sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         new ContactFragment.LocationRemover(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
 
@@ -136,7 +137,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (!sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         new ContactFragment.BirthdayRemover(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     return true;
@@ -153,7 +154,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (!sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         new ContactFragment.EmailRemover(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     return true;
@@ -181,7 +182,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         new ContactFragment.GoogleCopier(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR);
                     }
                     return true;
@@ -332,7 +333,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     boolean remind = Boolean.valueOf(String.valueOf(newValue));
                     Context context = preference.getContext();
                     AccountManager am = AccountManager.get(context);
-                    Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                    Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                     if (!remind) {
                         new CalendarFragment.ReminderRemover(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, context.getString(R.string.event_cal));
                     } else {
@@ -352,7 +353,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     boolean remind = Boolean.valueOf(String.valueOf(newValue));
                     Context context = preference.getContext();
                     AccountManager am = AccountManager.get(context);
-                    Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                    Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                     if (!remind) {
                         new CalendarFragment.ReminderRemover(context, account).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, context.getString(R.string.birthday_cal));
                     } else {
@@ -373,7 +374,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     int color = Integer.valueOf(String.valueOf(newValue));
                     Context context = preference.getContext();
                     AccountManager am = AccountManager.get(context);
-                    Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                    Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                     CalendarSyncAdapterService.setCalendarColor(context, account, context.getString(R.string.event_cal), color);
                     return true;
                 }
@@ -386,7 +387,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     int color = Integer.valueOf(String.valueOf(newValue));
                     Context context = preference.getContext();
                     AccountManager am = AccountManager.get(context);
-                    Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                    Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                     CalendarSyncAdapterService.setCalendarColor(context, account, context.getString(R.string.birthday_cal), color);
                     return true;
                 }
@@ -401,7 +402,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (!sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         CalendarSyncAdapterService.removeCalendar(context, account, context.getString(R.string.event_cal));
                     }
                     return true;
@@ -417,7 +418,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (!sync) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         CalendarSyncAdapterService.removeCalendar(context, account, context.getString(R.string.birthday_cal));
                     }
                     return true;
@@ -434,7 +435,7 @@ public class PreferencesActivity extends PreferenceActivity {
                     if (phoneOnlyValue) {
                         Context context = preference.getContext();
                         AccountManager am = AccountManager.get(context);
-                        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                         CalendarSyncAdapterService.removeCalendar(context, account, context.getString(R.string.birthday_cal));
                         ContentResolver.requestSync(account, CalendarContract.AUTHORITY, new Bundle());
                     }
@@ -449,7 +450,7 @@ public class PreferencesActivity extends PreferenceActivity {
                 public boolean onPreferenceChange(Preference preference, Object newValue) {
                     Context context = preference.getContext();
                     AccountManager am = AccountManager.get(context);
-                    Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                    Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                     CalendarSyncAdapterService.removeCalendar(context, account, context.getString(R.string.event_cal));
                     ContentResolver.requestSync(account, CalendarContract.AUTHORITY, new Bundle());
                     return true;

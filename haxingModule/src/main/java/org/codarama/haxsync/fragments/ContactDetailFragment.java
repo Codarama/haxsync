@@ -268,7 +268,7 @@ public class ContactDetailFragment extends Fragment {
             for (String param : params) {
                 //	ContactDetailFragment.this.progressBar.setVisibility(View.VISIBLE);
                 AccountManager am = AccountManager.get(getActivity());
-                Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                 FacebookUtil.authorize(getActivity(), account);
                 ContactDetailFragment.this.pic = FacebookUtil.getProfilePicInfo(param);
                 ContactDetailFragment.this.picture = WebUtil.download(ContactDetailFragment.this.pic.url);

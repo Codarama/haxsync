@@ -37,7 +37,7 @@ android {
 dependencies {
     // Always use exact versions and no wildcards, to avoid build breakages
     // Each dependency is to be bumped manually after some sanity testing
-    compile 'org.apache.commons:commons-lang3:3.4'
+    compile 'org.apache.commons:commons-lang3:3.5'
     compile 'com.facebook.android:facebook-android-sdk:4.16.1'
     compile 'com.github.amlcurran.showcaseview:library:5.4.3'
     compile 'me.villani.lorenzo.android:android-cropimage:1.1.2'
@@ -45,6 +45,6 @@ dependencies {
     compile 'com.github.yukuku:ambilwarna:2.0.1'
 
     testCompile 'junit:junit:4.12'
-    testCompile 'org.mockito:mockito-core:2.1.0'
+    testCompile 'org.mockito:mockito-core:2.2.2'
     testCompile 'org.robolectric:robolectric:3.1.2'
 }

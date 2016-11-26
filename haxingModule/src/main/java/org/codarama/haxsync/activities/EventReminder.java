@@ -67,7 +67,7 @@ public class EventReminder extends Activity {
                 editor.commit();
 
                 AccountManager am = AccountManager.get(EventReminder.this);
-                Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+                Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
                 new EventReminder.ReminderUpdater(EventReminder.this, account, getMinutes()).executeOnExecutor(AsyncTask.SERIAL_EXECUTOR, EventReminder.this.getString(R.string.event_cal));
                 EventReminder.this.finish();
             }

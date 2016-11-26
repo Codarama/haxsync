@@ -1,39 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent">
-
-    <TextView
-        android:id="@+id/welcomeText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="false"
-        android:layout_marginTop="16dp"
-        android:fontFamily="sans-serif-light"
-        android:text="@string/welcome"
-        android:textAppearance="?android:textAppearance"
-        android:textSize="30sp" />
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_centerVertical="true"
-        android:src="@drawable/logo_touch" />
-
-    <!--<TextView-->
-        <!--android:id="@id/textView1"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentBottom="true"-->
-        <!--android:layout_centerHorizontal="true"-->
-        <!--android:layout_marginBottom="30.0dip"-->
-        <!--android:gravity="center"-->
-        <!--android:text="@string/touch_logo"-->
-        <!--android:textAppearance="?android:textAppearanceMedium" />-->
+    android:layout_height="fill_parent"
+    android:orientation="vertical">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/main_toolbar"
@@ -42,7 +12,13 @@
         android:background="?attr/colorPrimary"
         android:elevation="4dp"
         android:navigationIcon="@drawable/icon"
-        android:title="@string/app_name"
         android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
+        android:title="@string/app_name"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Dark" />
-</RelativeLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/fragment_container"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent" />
+
+</LinearLayout>

@@ -30,7 +30,6 @@
     <string name="wifi_only_summary">Synchronizuj kontakty wyłącznie przy dostępie do Wi-Fi.</string>
     <string name="wifi_only">Wyłącznie Wi-Fi</string>
     <string name="charging_only">Synchronizuj tylko w czasie ładowania</string>
-    <string name="charging_only_summary"></string>
     <string name="getting_friends">Pobieranie kontaktów z Facebook\'a...</string>
     <string name="sync_every">Synchronizuj co</string>
     <string name="days">Dni</string>

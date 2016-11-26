@@ -81,7 +81,7 @@ public class SyncPopup extends Activity {
 
     private void setSyncRate(long seconds) {
         AccountManager am = AccountManager.get(this);
-        Account account = am.getAccountsByType("org.codarama.haxsync.account")[0];
+        Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
         ContentResolver.addPeriodicSync(account, ContactsContract.AUTHORITY, new Bundle(), seconds);
         ContentResolver.addPeriodicSync(account, CalendarContract.AUTHORITY, new Bundle(), seconds);
         SharedPreferences.Editor editor = prefs.edit();

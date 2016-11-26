@@ -18,8 +18,15 @@
 
 package org.codarama.haxsync.activities;
 
-import android.content.Intent;
+import android.Manifest;
+import android.accounts.Account;
+import android.accounts.AccountManager;
+import android.content.ContentResolver;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -29,6 +36,8 @@ import android.view.MenuItem;
 import com.facebook.appevents.AppEventsLogger;
 
 import org.codarama.haxsync.R;
+import org.codarama.haxsync.fragments.HomeFragment;
+import org.codarama.haxsync.fragments.SettingsFragment;
 
 /**
  * <p>Welcome screen</p>
@@ -59,23 +68,25 @@ public class WelcomeActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_welcome);
 
-        // Keeping this code for now, until we move away from using the ugly wizard
-
-//        ImageView image = (ImageView) findViewById(R.id.logo);
-//        image.setOnClickListener(new OnClickListener() {
-//
-//            @Override
-//            public void onClick(View v) {
-//                Intent nextIntent = new Intent(WelcomeActivity.this, WizardActivity.class);
-//                WelcomeActivity.this.startActivity(nextIntent);
-//                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-//                WelcomeActivity.this.finish();
-//            }
-//        });
-
+        // build aup the custom action bar, thank you very much
         Toolbar myToolbar = (Toolbar) findViewById(R.id.main_toolbar);
         setSupportActionBar(myToolbar);
+
+        // However, if we're being restored from a previous state, then we don't need to do
+        // anything and should return or else we could end up with overlapping fragments.
+        if (savedInstanceState != null) {
+            return;
+        }
+
+        // Create a new Fragment to be placed in the activity layout
+        Fragment homeFragment = new HomeFragment();
+
+        // In case this activity was started with special instructions from an Intent, pass the
+        // Intent's extras to the fragment as arguments
+        homeFragment.setArguments(getIntent().getExtras());
+        getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
     }
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -87,20 +98,51 @@ public class WelcomeActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.nav_home: {
-                Log.i(TAG, "Navigating home");
-            }
+                // Create fragment and give it an argument specifying the article it should show
+                HomeFragment newFragment = new HomeFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
 
-            case R.id.nav_settings: {
-                Log.i(TAG, "Navigating to settings");
-                Intent nextIntent = new Intent(WelcomeActivity.this, PreferencesActivity.class);
-                WelcomeActivity.this.startActivity(nextIntent);
-                overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-                WelcomeActivity.this.finish();
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
                 return true;
             }
 
+            case R.id.nav_settings: {
+                // Create fragment and give it an argument specifying the article it should show
+                SettingsFragment newFragment = new SettingsFragment();
+                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+
+                // Replace whatever is in the fragment_container view with this fragment,
+                // and add the transaction to the back stack so the user can navigate back
+                transaction.replace(R.id.fragment_container, newFragment);
+                transaction.addToBackStack(null);
+
+                // Commit the transaction
+                transaction.commit();
+                return true;
+            }
+
+            // as per https://developer.android.com/training/sync-adapters/running-sync-adapter.html
+            // we might want to reconsider allowing manual sync - the basic flaw in this design is
+            // that the user could not be trusted to know when it is the best time to sync
             case R.id.nav_manual_sync: {
-                Log.i(TAG, "Executing manual sync");
+                Log.d(TAG, "User requested manual sync");
+                AccountManager am = AccountManager.get(WelcomeActivity.this);
+                Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
+
+                // Pass the settings flags by inserting them in a bundle
+                Bundle settingsBundle = new Bundle();
+                settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
+                settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
+
+                String authority = "myauthority"; // FIXME Need to introduce authority for our sync adapters perhaps?
+
+                ContentResolver.requestSync(account, authority, settingsBundle);
                 return true;
             }
 

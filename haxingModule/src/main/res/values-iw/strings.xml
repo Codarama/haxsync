@@ -29,7 +29,6 @@
     <string name="wifi_only_summary">סנכרן רק בעת חיבור לאינטרנט אלחוטי.</string>
     <string name="wifi_only">Wi-Fi בלבד</string>
     <string name="charging_only">סנכרן רק כשהמכשיר בטעינה</string>
-    <string name="charging_only_summary">סנכרון יבוצע רק אם המכשיר נמצא בטעינה.</string>
     <string name="getting_friends">מושך רשימת חברים מפייסבוק...</string>
     <string name="sync_every">סנכרן כל</string>
     <string name="days">ימים</string>

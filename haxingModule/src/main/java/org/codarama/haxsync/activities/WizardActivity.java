@@ -72,9 +72,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
 
     private final String TAG = "WizardActivity";
     private final String DEFAULT_USER_NAME = "John Doe"; // default user name when one could not be resolved normally
-    private ArrayList<Integer> steps = new ArrayList<Integer>();
-    private String[] permissions = {"offline_access", "read_stream", "user_events", "friends_events", "friends_status", "user_status",
-            "friends_photos", "user_photos", "friends_about_me", "friends_website", "email", "friends_birthday", "friends_location"};
+    private ArrayList<Integer> steps = new ArrayList<>();
     private ViewFlipper flipper = null;
     private View next = null;
     private View settingsView = null;
@@ -202,7 +200,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
                                             SharedPreferences.Editor editor = prefs.edit();
                                             editor.putInt("permission_level", FacebookUtil.PERMISSION_LEVEL);
                                             editor.putLong("access_expires", token.getExpires().getTime());
-                                            editor.commit();
+                                            editor.apply();
 
                                             next.setEnabled(true);
                                             flipper.showNext();
@@ -287,7 +285,7 @@ public class WizardActivity extends AccountAuthenticatorActivity {
                     boolean settingsFound = prefs.getBoolean("settings_found", false);
                     SharedPreferences.Editor editor = prefs.edit();
                     editor.putBoolean("settings_found", true);
-                    editor.commit();
+                    editor.apply();
                 }
                 if (isLast()) {
                     DeviceUtil.toggleWizard(WizardActivity.this, !wizardCheck.isChecked());

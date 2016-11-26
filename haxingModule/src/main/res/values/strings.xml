@@ -30,7 +30,6 @@
     <string name="wifi_only_summary">Only sync when in a Wi-Fi network.</string>
     <string name="wifi_only">Wi-Fi only</string>
     <string name="charging_only">Only sync while charging</string>
-    <string name="charging_only_summary"></string>
     <string name="getting_friends">Getting Facebook Friends…</string>
     <string name="sync_every">Sync Every</string>
     <string name="days">Days</string>
@@ -156,4 +155,5 @@
     <string name="menu_settings">Settings</string>
     <string name="menu_manual_sync">Sync now</string>
     <string name="codarama_haxsync">Codarama HaxSync</string>
+    <string name="cont_desc_logo">HaxSync logo</string>
 </resources>
