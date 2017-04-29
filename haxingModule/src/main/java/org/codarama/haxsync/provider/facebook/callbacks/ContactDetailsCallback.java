@@ -129,6 +129,5 @@ public class ContactDetailsCallback implements GraphRequest.Callback {
             // after we have executed a force sync, restore setting back to no force sync
             prefs.setForceSync(false);
         }
-
     }
 }

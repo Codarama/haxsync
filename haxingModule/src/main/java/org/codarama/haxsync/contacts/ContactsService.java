@@ -61,7 +61,6 @@ public class ContactsService {
     /**
      * <p>Reads the HTCData tags in the notes of each of the Google contacts to identify the
      * respective Facebook ID. Returns a {@link Map} of Facebook IDs (keys) and Google IDs (values) pairs.</p>
-     * <p/>
      *
      * @return a mapping between Facebook ID and Google ID
      */

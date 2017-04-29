@@ -156,4 +156,8 @@
     <string name="menu_manual_sync">Sync now</string>
     <string name="codarama_haxsync">Codarama HaxSync</string>
     <string name="cont_desc_logo">HaxSync logo</string>
+
+    <!-- Welcome screen -->
+    <string name="welcome_screen_permission_denied_title">Permission denied</string>
+    <string name="welcome_screen_permission_denied_text">HaxSync could not do it\'s job, because you have denied permissions to the device.</string>
 </resources>

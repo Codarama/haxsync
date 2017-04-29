@@ -22,22 +22,26 @@ import android.Manifest;
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.ContentResolver;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.content.ContextCompat;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.facebook.FacebookSdk;
 import com.facebook.appevents.AppEventsLogger;
 
 import org.codarama.haxsync.R;
+import org.codarama.haxsync.SyncAccount;
 import org.codarama.haxsync.fragments.HomeFragment;
-import org.codarama.haxsync.fragments.SettingsFragment;
 
 /**
  * <p>Welcome screen</p>
@@ -45,26 +49,24 @@ import org.codarama.haxsync.fragments.SettingsFragment;
 public class WelcomeActivity extends AppCompatActivity {
 
     private static final String TAG = "WelcomeActivity";
+    private static final int WELCOME_ACTIVITY_REQUEST_CODE = 1;
 
     @Override
     protected void onResume() {
         super.onResume();
-
-        // Logs 'install' and 'app activate' App Events.
-        AppEventsLogger.activateApp(this);
+        AppEventsLogger.activateApp(getApplication());
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-
-        // Logs 'app deactivate' App Event.
-        AppEventsLogger.deactivateApp(this);
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        FacebookSdk.sdkInitialize(getApplicationContext());
 
         setContentView(R.layout.activity_welcome);
 
@@ -85,6 +87,28 @@ public class WelcomeActivity extends AppCompatActivity {
         // Intent's extras to the fragment as arguments
         homeFragment.setArguments(getIntent().getExtras());
         getSupportFragmentManager().beginTransaction().add(R.id.fragment_container, homeFragment).commit();
+
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_CONTACTS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.READ_CONTACTS}, WELCOME_ACTIVITY_REQUEST_CODE);
+            return;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case WELCOME_ACTIVITY_REQUEST_CODE: {
+                if (grantResults.length <= 0 || grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // User has specifically denied permissions, we need to display a friendly message
+                    new AlertDialog.Builder(getApplicationContext())
+                            .setTitle(getResources().getString(R.string.welcome_screen_permission_denied_title))
+                            .setMessage(R.string.welcome_screen_permission_denied_text)
+                            .setIcon(android.R.drawable.ic_dialog_alert)
+                            .show();
+                }
+            }
+        }
     }
 
 
@@ -113,17 +137,8 @@ public class WelcomeActivity extends AppCompatActivity {
             }
 
             case R.id.nav_settings: {
-                // Create fragment and give it an argument specifying the article it should show
-                SettingsFragment newFragment = new SettingsFragment();
-                FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
-
-                // Replace whatever is in the fragment_container view with this fragment,
-                // and add the transaction to the back stack so the user can navigate back
-                transaction.replace(R.id.fragment_container, newFragment);
-                transaction.addToBackStack(null);
-
-                // Commit the transaction
-                transaction.commit();
+                Intent preferences = new Intent(getApplicationContext(), PreferencesActivity.class);
+                startActivity(preferences);
                 return true;
             }
 
@@ -132,8 +147,8 @@ public class WelcomeActivity extends AppCompatActivity {
             // that the user could not be trusted to know when it is the best time to sync
             case R.id.nav_manual_sync: {
                 Log.d(TAG, "User requested manual sync");
-                AccountManager am = AccountManager.get(WelcomeActivity.this);
-                Account account = am.getAccountsByType(getResources().getString(R.string.ACCOUNT_TYPE))[0];
+                SyncAccount syncAccount = new SyncAccount(AccountManager.get(WelcomeActivity.this));
+                Account account = syncAccount.getHaxSyncAccount(getResources().getString(R.string.ACCOUNT_TYPE));
 
                 // Pass the settings flags by inserting them in a bundle
                 Bundle settingsBundle = new Bundle();

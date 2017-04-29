@@ -36,6 +36,12 @@ public final class HomeFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        prepareData();
+
         return inflater.inflate(R.layout.home_fragment, container, false);
+    }
+
+    private void prepareData() {
+
     }
 }

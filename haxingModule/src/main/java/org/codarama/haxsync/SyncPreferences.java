@@ -40,6 +40,9 @@ import java.util.Set;
  * <li>BIRTHDAY_REMINDER_MINUTES (1440)</li>
  * <li>EVENT_STATUS (attending|unsure)</li>
  * <li>FORCE_SYNC (false)</li>
+ * <li>HAXSYNC_CONTACTS (0)</li>
+ * <li>HAXSYNC_EVENTS (0)</li>
+ * <li>HAXSYNC_BIRTHDAYS (0)</li>
  * </ul>
  */
 public class SyncPreferences {
@@ -57,6 +60,10 @@ public class SyncPreferences {
     private static final String EVENT_STATUS = "event_status";
     private static final String FORCE_SYNC = "force_dl";
 
+    private static final String HAXSYNC_CONTACTS = "haxsynx_contacts";
+    private static final String HAXSYNC_EVENTS = "haxsynx_events";
+    private static final String HAXSYNC_BIRTHDAYS = "haxsynx_birthdays";
+
     private final Context context;
     private final SharedPreferences prefs;
 
@@ -64,6 +71,36 @@ public class SyncPreferences {
         this.context = context;
         prefs = context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS);
     }
+
+    public long getHaxsyncContacts() {
+        return prefs.getLong(HAXSYNC_CONTACTS, 0);
+    }
+    public void setHaxsyncContacts(long newValue) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(HAXSYNC_CONTACTS, newValue);
+        editor.commit();
+    }
+
+
+    public long getHaxsyncEvents() {
+        return prefs.getLong(HAXSYNC_EVENTS, 0);
+    }
+    public void setHaxsyncEvents(long newValue) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(HAXSYNC_EVENTS, newValue);
+        editor.commit();
+    }
+
+
+    public long getHaxsyncBirthdays() {
+        return prefs.getLong(HAXSYNC_BIRTHDAYS, 0);
+    }
+    public void setHaxsyncBirthdays(long newValue) {
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putLong(HAXSYNC_BIRTHDAYS, newValue);
+        editor.commit();
+    }
+
 
     public long getEventReminderMinutes() {
         return prefs.getLong(EVENT_REMINDER_MINUTES, 30);

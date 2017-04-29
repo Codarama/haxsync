@@ -24,32 +24,10 @@ Current state
 [![Dependency Status](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1/badge.svg?style=flat)](https://www.versioneye.com/user/projects/55eeb510211c6b0019001ae1)
 [![License](http://img.shields.io/:license-GPL2-blue.svg)](http://www.gnu.org/licenses/gpl-2.0.html)
 
-| Priority  | Status                  | Feature              | Percentage complete |
-| :-------: | ----------------------- | -------------------- | ------------------- |
-|1          |   :white_check_mark:    | Friends Photo Sync   |                 100%|
-|2          |   :x:                   | Friend List Sync     |                  33%|
-|3          |   :white_check_mark:    | Event Sync           |                 100%|
-|4          |   :x:                   | Event Attendee Sync  |                   0%|
-|5          |   :x:                   | Birthday Sync        |                   0%|
-
-
-
 The project is currently **not available for download** at Google Play.
 
 Q&A
 ---
-**What are the next steps?**
-
-1. :heavy_check_mark: Clean up project, set up build and test infrastructure
-2. :heavy_multiplication_x: Test current functionality, fix any bugs that were introduced during the transition
-3. :heavy_multiplication_x: Workaround issues with Facebook Android API
-4. :heavy_multiplication_x: Release a new version via Google Play
-
-**What ambitious future plans do you have?**
-
-1. :heavy_check_mark: Upgrade APIs to latest versions
-2. :heavy_multiplication_x: Remove dependencies on stale 3rd party libs
-3. :heavy_multiplication_x: Sync from new social media sources
 
 **Why did you change the package structure?**
 

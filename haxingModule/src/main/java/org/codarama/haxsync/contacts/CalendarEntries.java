@@ -27,7 +27,7 @@ import java.util.List;
 
 /**
  * <p>This class is used to store calendar entries, parsed from an iCal birthday calendar</p>
- * <p>PArt of it's purpose is to properly discover the names of each entry</p>
+ * <p>Part of it's purpose is to properly discover the names of each entry</p>
  */
 public class CalendarEntries {
 
