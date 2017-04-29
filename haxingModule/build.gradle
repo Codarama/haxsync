@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 24                       // Nougat (v 7.0) , see https://source.android.com/source/build-numbers.html
-2    buildToolsVersion '25.0.0'                 // October 2015 , see https://developer.android.com/studio/releases/build-tools.html
+    buildToolsVersion '25.0.0'                 // October 2015 , see https://developer.android.com/studio/releases/build-tools.html
 
     defaultConfig {
         minSdkVersion 21                       // Lollipop (v 5.0)
