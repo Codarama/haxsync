@@ -17,31 +17,70 @@
  */
 package org.codarama.haxsync.fragments;
 
+import android.content.ContentResolver;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.ContactsContract;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import org.codarama.haxsync.R;
+import org.codarama.haxsync.SyncPreferences;
 
 /**
  * <p></>Home Screen Fragment</p>
- *
+ * <p>
  * <p>Displays information about the current synchronization state and some
  * statistics such as number of accounts synced, etc.<p/>
  */
 public final class HomeFragment extends Fragment {
 
+    private int totalContacts;
+
+    private int syncedContacts;
+    private int syncedBirthdays;
+    private int syncedEvents;
+
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        prepareData();
-
         return inflater.inflate(R.layout.home_fragment, container, false);
     }
 
-    private void prepareData() {
+    @Override
+    public void onActivityCreated(Bundle savedInstanceState) {
+        super.onActivityCreated(savedInstanceState);
+        prepareData();
+    }
 
+    /**
+     * First step - load data once when view is visible
+     * Next step - bind a listener to monitor when sync finishes
+     */
+    private void prepareData() {
+        ContentResolver resolver = getActivity().getApplicationContext().getContentResolver();
+        try (Cursor cursor = resolver.query(ContactsContract.RawContacts.CONTENT_URI, null, null, null, null)) {
+            totalContacts = cursor.getCount();
+        }
+
+        SyncPreferences preferences = new SyncPreferences(getActivity().getApplicationContext());
+        this.syncedContacts = preferences.getHaxsyncContacts();
+        this.syncedBirthdays = preferences.getHaxsyncBirthdays();
+        this.syncedEvents = preferences.getHaxsyncEvents();
+
+
+        TextView synced = (TextView) getActivity().findViewById(R.id.textContactsSynced);
+        synced.setText(syncedContacts + " of " + totalContacts);
+
+        TextView contacts = (TextView) getActivity().findViewById(R.id.textSyncedTotal);
+        contacts.setText(Integer.toString(syncedContacts));
+        TextView events = (TextView) getActivity().findViewById(R.id.textEventsTotal);
+        events.setText(Integer.toString(syncedBirthdays));
+        TextView birthdays = (TextView) getActivity().findViewById(R.id.textBirthdaysTotal);
+        birthdays.setText(Integer.toString(syncedEvents));
     }
 }

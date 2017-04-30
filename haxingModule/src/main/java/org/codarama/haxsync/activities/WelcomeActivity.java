@@ -155,9 +155,8 @@ public class WelcomeActivity extends AppCompatActivity {
                 settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_MANUAL, true);
                 settingsBundle.putBoolean(ContentResolver.SYNC_EXTRAS_EXPEDITED, true);
 
-                String authority = "myauthority"; // FIXME Need to introduce authority for our sync adapters perhaps?
-
-                ContentResolver.requestSync(account, authority, settingsBundle);
+                ContentResolver.requestSync(account, "com.android.contacts", settingsBundle);
+                ContentResolver.requestSync(account, "com.android.calendar", settingsBundle);
                 return true;
             }
 

@@ -72,18 +72,18 @@ public class SyncPreferences {
         prefs = context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_MULTI_PROCESS);
     }
 
-    public long getHaxsyncContacts() {
-        return prefs.getLong(HAXSYNC_CONTACTS, 0);
+    public int getHaxsyncContacts() {
+        return prefs.getInt(HAXSYNC_CONTACTS, 0);
     }
-    public void setHaxsyncContacts(long newValue) {
+    public void setHaxsyncContacts(int newValue) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(HAXSYNC_CONTACTS, newValue);
         editor.commit();
     }
 
 
-    public long getHaxsyncEvents() {
-        return prefs.getLong(HAXSYNC_EVENTS, 0);
+    public int getHaxsyncEvents() {
+        return prefs.getInt(HAXSYNC_EVENTS, 0);
     }
     public void setHaxsyncEvents(long newValue) {
         SharedPreferences.Editor editor = prefs.edit();
@@ -92,10 +92,10 @@ public class SyncPreferences {
     }
 
 
-    public long getHaxsyncBirthdays() {
-        return prefs.getLong(HAXSYNC_BIRTHDAYS, 0);
+    public int getHaxsyncBirthdays() {
+        return prefs.getInt(HAXSYNC_BIRTHDAYS, 0);
     }
-    public void setHaxsyncBirthdays(long newValue) {
+    public void setHaxsyncBirthdays(int newValue) {
         SharedPreferences.Editor editor = prefs.edit();
         editor.putLong(HAXSYNC_BIRTHDAYS, newValue);
         editor.commit();
